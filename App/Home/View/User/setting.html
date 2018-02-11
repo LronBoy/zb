@@ -1,107 +1,98 @@
-<html style="font-size: 100px;">
-<head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="__PUBLIC__/home/vonic/vonic.min.css">
-    <link rel="stylesheet" href="__PUBLIC__/home/css/app.css">
-    <link rel="stylesheet" href="__PUBLIC__/home/css/public.css">
-    <script src="__PUBLIC__/home/js/public.js"></script>
-    <title>{$meta_title}</title>
-</head>
-<body class="grade-a">
-<div von-app="" transition-direction="forward">
-    <div class="page has-navbar divSettingPage"><p class="divSetting_title">设置中心</p>
-        <!--修改内容---start-->
-        <div class="divSettingChange">
-            <div class="divBackPerson" style="border-top: none;">
-                修改密码
-                <div class="ion-ios-arrow-forward" style="color: rgb(155, 155, 155);"></div>
-            </div>
-            <div class="divBackPerson" style="border-top: none;">
-                绑定帐号
-                <div class="ion-ios-arrow-forward" style="color: rgb(155, 155, 155);"></div>
-            </div>
-            <div class="divBinding" style="border-top: none; color: rgb(102, 102, 102); display: none;">绑定帐号<span
-                    style="color: rgb(170, 170, 170);">twm_38d4e0914</span>
-                <p>已绑定</p></div>
-            <div style="height: 1px; background: rgb(236, 236, 236); float: left; width: 100%;"></div>
-            <div class="divBackPerson" style="border-top: none; border-bottom: none; display: none;">
-                绑定手机号
-                <div class="ion-ios-arrow-forward" style="color: rgb(155, 155, 155);"></div>
-            </div>
-            <div class="divBinding" style="border-top: none; color: rgb(102, 102, 102);">绑定手机号<span
-                    style="color: rgb(170, 170, 170);">176****6931</span>
-                <p>已绑定</p></div>
-        </div>
-        <div style="margin-top: 0.4rem; padding: 0px 0.2rem; float: left; width: 100%; background: rgb(255, 255, 255);">
-            <div class="divBackPerson" style="color: rgb(71, 93, 137);">
-                返回个人中心
-                <div class="ion-ios-arrow-forward" style="color: rgb(155, 155, 155);"></div>
-            </div>
-        </div>
-        <div class="divLogout"><span>退出登录</span></div>
-        <!--修改内容---end---->
-        <!--微信帐号绑定---start-->
-        <div class="page_pop_up" style="display: none;">
-            <div class="binding_bg"></div>
-            <div class="binding_box">
-                <div class="popuTitle">绑定账号</div>
-                <div class="divBindWxBeizu" style="">注：微信只能绑定一次已有账号</div>
-                <div class="confir_changepwd" style="display: none;"><input placeholder="请输入已有账号" type="password">
-                    <input placeholder="请输入账号密码" type="password">
-                    <input placeholder="请确认新密码" type="password">
+<extend name="Public/base" />
+<block name="main">
+    <div von-app="" transition-direction="forward">
+        <div class="page has-navbar divSettingPage"><p class="divSetting_title">设置中心</p>
+            <!--修改内容---start-->
+            <div class="divSettingChange">
+                <div class="divBackPerson" style="border-top: none;">
+                    修改密码
+                    <div class="ion-ios-arrow-forward" style="color: rgb(155, 155, 155);"></div>
                 </div>
-                <div class="confir_changepwd" style="">
-                    <input placeholder="请输入已有账号" type="text">
-                    <input placeholder="请输入账号密码" type="password"></div>
-                <div class="confirm_waring" style="display: none;"><img src="__PUBLIC__/demo/warning.png"></div>
-                <div class="page_pop_nobox">
-                    <div class="page_no fl">取消</div>
-                    <div class="page_yes fl">确认</div>
-                    <div class="clearfix"></div>
+                <div class="divBackPerson" style="border-top: none;">
+                    绑定帐号
+                    <div class="ion-ios-arrow-forward" style="color: rgb(155, 155, 155);"></div>
+                </div>
+                <div class="divBinding" style="border-top: none; color: rgb(102, 102, 102); display: none;">绑定帐号<span
+                        style="color: rgb(170, 170, 170);">twm_38d4e0914</span>
+                    <p>已绑定</p></div>
+                <div style="height: 1px; background: rgb(236, 236, 236); float: left; width: 100%;"></div>
+                <div class="divBackPerson" style="border-top: none; border-bottom: none; display: none;">
+                    绑定手机号
+                    <div class="ion-ios-arrow-forward" style="color: rgb(155, 155, 155);"></div>
+                </div>
+                <div class="divBinding" style="border-top: none; color: rgb(102, 102, 102);">绑定手机号<span
+                        style="color: rgb(170, 170, 170);">176****6931</span>
+                    <p>已绑定</p></div>
+            </div>
+            <div style="margin-top: 0.4rem; padding: 0px 0.2rem; float: left; width: 100%; background: rgb(255, 255, 255);">
+                <div class="divBackPerson" style="color: rgb(71, 93, 137);">
+                    返回个人中心
+                    <div class="ion-ios-arrow-forward" style="color: rgb(155, 155, 155);"></div>
                 </div>
             </div>
-        </div>
-        <!--微信帐号绑定---end-->
+            <div class="divLogout"><span>退出登录</span></div>
+            <!--修改内容---end---->
+            <!--微信帐号绑定---start-->
+            <div class="page_pop_up" style="display: none;">
+                <div class="binding_bg"></div>
+                <div class="binding_box">
+                    <div class="popuTitle">绑定账号</div>
+                    <div class="divBindWxBeizu" style="">注：微信只能绑定一次已有账号</div>
+                    <div class="confir_changepwd" style="display: none;"><input placeholder="请输入已有账号" type="password">
+                        <input placeholder="请输入账号密码" type="password">
+                        <input placeholder="请确认新密码" type="password">
+                    </div>
+                    <div class="confir_changepwd" style="">
+                        <input placeholder="请输入已有账号" type="text">
+                        <input placeholder="请输入账号密码" type="password"></div>
+                    <div class="confirm_waring" style="display: none;"><img src="__PUBLIC__/demo/warning.png"></div>
+                    <div class="page_pop_nobox">
+                        <div class="page_no fl">取消</div>
+                        <div class="page_yes fl">确认</div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+            <!--微信帐号绑定---end-->
 
-        <!--手机号绑定----start-->
-        <div class="page_pop_up" style="display: none;">
-            <div class="binding_bg"></div>
-            <div class="binding_box">
-                <div class="popuTitle">绑定手机号</div>
-                <div class="phone_01" style="margin-top: 0.2rem;">
-                    <input placeholder="请输入手机号" id="bingphone" type="tel">
-                </div>
-                <div class="phone_02">
-                    <input placeholder="请输入验证码" id="phonecode" type="tel">
-                    <label id="gaincode" style="color: rgb(51, 51, 51);">获取验证码</label>
-                </div>
-                <div class="phone_01">
-                    <input placeholder="请输入用户密码" id="smspwd" type="password" style="margin-top: 0px;">
-                </div>
-                <div class="phone_03" style="display: none;"><img src="__PUBLIC__/demo/warning.png"></div>
-                <div class="page_pop_nobox">
-                    <div class="page_no fl">取消</div>
-                    <div class="page_yes fl">确认</div>
-                    <div class="clearfix"></div>
-                </div>
-            </div>
-        </div>
-        <!--手机绑定-----end-->
-        <!--退出弹窗----start-->
-        <div class="page_pop_up" style="display: none;">
-            <div class="binding_bg"></div>
-            <div class="binding_box">
-                <div class="popuTitle"></div>
-                <div class="divLogoutConfirm">确定要退出吗？</div>
-                <div class="page_pop_nobox">
-                    <div class="page_no fl">取消</div>
-                    <div class="page_yes fl">确认</div>
-                    <div class="clearfix"></div>
+            <!--手机号绑定----start-->
+            <div class="page_pop_up" style="display: none;">
+                <div class="binding_bg"></div>
+                <div class="binding_box">
+                    <div class="popuTitle">绑定手机号</div>
+                    <div class="phone_01" style="margin-top: 0.2rem;">
+                        <input placeholder="请输入手机号" id="bingphone" type="tel">
+                    </div>
+                    <div class="phone_02">
+                        <input placeholder="请输入验证码" id="phonecode" type="tel">
+                        <label id="gaincode" style="color: rgb(51, 51, 51);">获取验证码</label>
+                    </div>
+                    <div class="phone_01">
+                        <input placeholder="请输入用户密码" id="smspwd" type="password" style="margin-top: 0px;">
+                    </div>
+                    <div class="phone_03" style="display: none;"><img src="__PUBLIC__/demo/warning.png"></div>
+                    <div class="page_pop_nobox">
+                        <div class="page_no fl">取消</div>
+                        <div class="page_yes fl">确认</div>
+                        <div class="clearfix"></div>
+                    </div>
                 </div>
             </div>
+            <!--手机绑定-----end-->
+            <!--退出弹窗----start-->
+            <div class="page_pop_up" style="display: none;">
+                <div class="binding_bg"></div>
+                <div class="binding_box">
+                    <div class="popuTitle"></div>
+                    <div class="divLogoutConfirm">确定要退出吗？</div>
+                    <div class="page_pop_nobox">
+                        <div class="page_no fl">取消</div>
+                        <div class="page_yes fl">确认</div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+            <!--退出弹出---end----->
         </div>
-        <!--退出弹出---end----->
     </div>
-</div>
-</body>
-</html>
+</block>

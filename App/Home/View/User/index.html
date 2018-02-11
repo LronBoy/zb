@@ -1,76 +1,68 @@
-<html style="font-size: 100px;">
-<head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="__PUBLIC__/home/js/vonic/vonic.min.css">
-    <link rel="stylesheet" href="__PUBLIC__/home/css/app.css">
-    <link rel="stylesheet" href="__PUBLIC__/home/css/public.css">
-    <script src="__PUBLIC__/home/js/public.js"></script>
-    <title>{$meta_title}</title>
-</head>
-
-<body class="grade-a">
-<div von-app="" transition-direction="forward">
-    <div class="">
-        <div class="main_content" style="top: 0px;">
-            <div class="page"><!---->
-                <div class="page has-navbar" transition="slide">
-                    <div class="scroll page-content pull-down">
-                        <div class="scroll-inner" style="transform: translate3d(0px, 0px, 0px);"><!---->
-                            <div class="my_content">
-                                <!--头部用户信息---start-->
-                                <div class="userinfo_content">
-                                    <!--头像---start-->
-                                    <img class="userinfo_header_icon" src="__PUBLIC__/demo/noavatar_middle.gif">
-                                    <!--头像---end---->
-                                    <div class="userinfo_info">
-                                        <!--用户名帐号ID---start-->
-                                        <p class="p_Name">twm_38d4e0914<img src="__PUBLIC__/demo/0.png"></p>
-                                        <p class="p_UID" style="text-indent: 0px;"><!----> UID : 1234340</p> <!---->
-                                        <!--用户名帐号ID---end---->
+<extend name="Public/base" />
+<block name="main">
+    <div von-app="" transition-direction="forward">
+        <div class="">
+            <div class="main_content" style="top: 0px;">
+                <div class="page"><!---->
+                    <div class="page has-navbar" transition="slide">
+                        <div class="scroll page-content pull-down">
+                            <div class="scroll-inner" style="transform: translate3d(0px, 0px, 0px);"><!---->
+                                <div class="my_content">
+                                    <!--头部用户信息---start-->
+                                    <div class="userinfo_content">
+                                        <!--头像---start-->
+                                        <img class="userinfo_header_icon" src="__PUBLIC__/demo/noavatar_middle.gif">
+                                        <!--头像---end---->
+                                        <div class="userinfo_info">
+                                            <!--用户名帐号ID---start-->
+                                            <p class="p_Name">twm_38d4e0914<img src="__PUBLIC__/demo/0.png"></p>
+                                            <p class="p_UID" style="text-indent: 0px;"><!----> UID : 1234340</p> <!---->
+                                            <!--用户名帐号ID---end---->
+                                        </div>
+                                        <!--查看详情---start--->
+                                        <div class="divRightIcon"><img src="__PUBLIC__/demo/right_icon.png" class="vcenter"></div>
+                                        <!--查看详情---end----->
                                     </div>
-                                    <!--查看详情---start--->
-                                    <div class="divRightIcon"><img src="__PUBLIC__/demo/right_icon.png" class="vcenter"></div>
-                                    <!--查看详情---end----->
-                                </div>
-                                <!--头部用户信息---end---->
-                                <!--我的钱包---start-->
-                                <div class="useritem_content useritem_content_margintop useritem_content_borderbottom">
-                                    <img src="__PUBLIC__/demo/money_icon.7ab66c0.png" class="useritem_icon fl">
-                                    <div class="useritem_left fl">我的钱包<span style="display: none;"></span></div>
-                                    <div class="useritem_right fr"><span></span>
-                                        <i style="color: rgb(255, 0, 0); font-size: 0.3rem;">充值</i>
-                                    </div> <!---->
-                                    <img src="__PUBLIC__/demo/right_icon_useritem.png" class="vcenter right_icon_useritem">
-                                </div>
-                                <div class="fl user_item_money_info">
-                                    <div class="fl"><p>0.00</p>
-                                        <p>约玩币</p></div>
-                                    <div class="fl"><p>0</p>
-                                        <p>贡献值</p></div>
-                                </div>
-                                <!--我的钱包---end---->
-                                <!--设置中心---start-->
-                                <div class="useritem_content useritem_content_margintop useritem_content_borderbottom">
-                                    <img src="__PUBLIC__/demo/setting_icon.png" class="useritem_icon fl">
-                                    <div class="useritem_left fl">设置中心<span style="display: none;"></span></div>
-                                    <div class="useritem_right fr"><span></span> <i style="color: rgb(255, 0, 0);"></i></div>
-                                    <img src="__PUBLIC__/demo/right_icon.png" class="vcenter right_icon_useritem">
-                                </div>
-                                <!--设置中心---end---->
-                                <!--申请入驻---start-->
-                                <div class="useritem_content useritem_content_margintop useritem_content_borderbottom">
-                                    <img src="__PUBLIC__/demo/useritem_icon.png" class="useritem_icon fl">
-                                    <div class="useritem_left fl">申请入驻<span style="display: none;"></span></div>
-                                    <div class="useritem_right fr"><span></span> <i style="color: rgb(255, 0, 0);"></i></div>
-                                    <img src="__PUBLIC__/demo/right_icon.png" class="vcenter right_icon_useritem">
-                                </div>
-                                <!--申请入驻---end---->
-                                <!--联系客服---start-->
-                                <div class="useritem_content useritem_content_margintop useritem_content_borderbottom">
-                                    <img src="__PUBLIC__/demo/kefu_icon.png" class="useritem_icon fl">
-                                    <div class="useritem_left fl">联系客服<span style="display: none;"></span></div>
-                                    <div class="useritem_right fr"><span></span> <i style="color: rgb(255, 0, 0);"></i></div>
-                                    <img src="__PUBLIC__/demo/right_icon.png" class="vcenter right_icon_useritem">
+                                    <!--头部用户信息---end---->
+                                    <!--我的钱包---start-->
+                                    <div class="useritem_content useritem_content_margintop useritem_content_borderbottom">
+                                        <img src="__PUBLIC__/demo/money_icon.7ab66c0.png" class="useritem_icon fl">
+                                        <div class="useritem_left fl">我的钱包<span style="display: none;"></span></div>
+                                        <div class="useritem_right fr"><span></span>
+                                            <i style="color: rgb(255, 0, 0); font-size: 0.3rem;">充值</i>
+                                        </div> <!---->
+                                        <img src="__PUBLIC__/demo/right_icon_useritem.png" class="vcenter right_icon_useritem">
+                                    </div>
+                                    <div class="fl user_item_money_info">
+                                        <div class="fl"><p>0.00</p>
+                                            <p>约玩币</p></div>
+                                        <div class="fl"><p>0</p>
+                                            <p>贡献值</p></div>
+                                    </div>
+                                    <!--我的钱包---end---->
+                                    <!--设置中心---start-->
+                                    <div class="useritem_content useritem_content_margintop useritem_content_borderbottom">
+                                        <img src="__PUBLIC__/demo/setting_icon.png" class="useritem_icon fl">
+                                        <div class="useritem_left fl">设置中心<span style="display: none;"></span></div>
+                                        <div class="useritem_right fr"><span></span> <i style="color: rgb(255, 0, 0);"></i></div>
+                                        <img src="__PUBLIC__/demo/right_icon.png" class="vcenter right_icon_useritem">
+                                    </div>
+                                    <!--设置中心---end---->
+                                    <!--申请入驻---start-->
+                                    <div class="useritem_content useritem_content_margintop useritem_content_borderbottom">
+                                        <img src="__PUBLIC__/demo/useritem_icon.png" class="useritem_icon fl">
+                                        <div class="useritem_left fl">申请入驻<span style="display: none;"></span></div>
+                                        <div class="useritem_right fr"><span></span> <i style="color: rgb(255, 0, 0);"></i></div>
+                                        <img src="__PUBLIC__/demo/right_icon.png" class="vcenter right_icon_useritem">
+                                    </div>
+                                    <!--申请入驻---end---->
+                                    <!--联系客服---start-->
+                                    <div class="useritem_content useritem_content_margintop useritem_content_borderbottom">
+                                        <img src="__PUBLIC__/demo/kefu_icon.png" class="useritem_icon fl">
+                                        <div class="useritem_left fl">联系客服<span style="display: none;"></span></div>
+                                        <div class="useritem_right fr"><span></span> <i style="color: rgb(255, 0, 0);"></i></div>
+                                        <img src="__PUBLIC__/demo/right_icon.png" class="vcenter right_icon_useritem">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -79,39 +71,38 @@
             </div>
         </div>
     </div>
-</div>
-
-<div class="tabbar visible fixed" von-tabbar="">
-    <div class="tabbar-item" style="color: rgb(51, 51, 51);">
-        <div class="icon-wrapper"><i class="icon  ion-home-outline"></i></div>
-        <div class="text-wrapper">
-            <div class="von-scalable-wrapper" style="width: 100%; height: 100%;">
-                <div class="von-scalable"
-                     style="width: 500px; height: 46px; transform: scale(0.5, 0.5); left: -125px; top: -11.5px;"><span>首页</span>
+</block>
+<block name="menus">
+    <div class="tabbar visible fixed" von-tabbar="">
+        <div class="tabbar-item" style="color: rgb(51, 51, 51);">
+            <div class="icon-wrapper"><i class="icon  ion-home-outline"></i></div>
+            <div class="text-wrapper">
+                <div class="von-scalable-wrapper" style="width: 100%; height: 100%;">
+                    <div class="von-scalable"
+                         style="width: 500px; height: 46px; transform: scale(0.5, 0.5); left: -125px; top: -11.5px;"><span>首页</span>
+                    </div>
                 </div>
-            </div>
-        </div> <!--首页-->
-    </div>
-    <div class="tabbar-item" style="color: rgb(51, 51, 51);">
-        <div class="icon-wrapper"><i class="icon  ion-cart-outline"></i></div>
-        <div class="text-wrapper">
-            <div class="von-scalable-wrapper" style="width: 100%; height: 100%;">
-                <div class="von-scalable"
-                     style="width: 500px; height: 46px; transform: scale(0.5, 0.5); left: -125px; top: -11.5px;"><span>订单</span>
+            </div> <!--首页-->
+        </div>
+        <div class="tabbar-item" style="color: rgb(51, 51, 51);">
+            <div class="icon-wrapper"><i class="icon  ion-cart-outline"></i></div>
+            <div class="text-wrapper">
+                <div class="von-scalable-wrapper" style="width: 100%; height: 100%;">
+                    <div class="von-scalable"
+                         style="width: 500px; height: 46px; transform: scale(0.5, 0.5); left: -125px; top: -11.5px;"><span>订单</span>
+                    </div>
                 </div>
-            </div>
-        </div> <!--订单-->
-    </div>
-    <div class="tabbar-item" style="color: rgb(51, 51, 51);">
-        <div class="icon-wrapper"><i class="icon  ion-person-outline"></i></div>
-        <div class="text-wrapper">
-            <div class="von-scalable-wrapper" style="width: 100%; height: 100%;">
-                <div class="von-scalable"
-                     style="width: 500px; height: 46px; transform: scale(0.5, 0.5); left: -125px; top: -11.5px;"><span>我的</span>
+            </div> <!--订单-->
+        </div>
+        <div class="tabbar-item" style="color: rgb(51, 51, 51);">
+            <div class="icon-wrapper"><i class="icon  ion-person-outline"></i></div>
+            <div class="text-wrapper">
+                <div class="von-scalable-wrapper" style="width: 100%; height: 100%;">
+                    <div class="von-scalable"
+                         style="width: 500px; height: 46px; transform: scale(0.5, 0.5); left: -125px; top: -11.5px;"><span>我的</span>
+                    </div>
                 </div>
-            </div>
-        </div> <!--我的-->
+            </div> <!--我的-->
+        </div>
     </div>
-</div>
-</body>
-</html>
+</block>

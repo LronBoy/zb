@@ -1,168 +1,160 @@
-<html style="font-size: 100px;">
-<head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="__PUBLIC__/home/vonic/vonic.min.css">
-    <link rel="stylesheet" href="__PUBLIC__/home/css/app.css">
-    <link rel="stylesheet" href="__PUBLIC__/home/css/public.css">
-    <script src="__PUBLIC__/home/js/public.js"></script>
-    <title>{$meta_title}</title>
-</head>
-<body class="grade-a">
-<div von-app="" transition-direction="forward">
-    <div class="page has-navbar">
-        <!--头像上传---start-->
-        <div class="updown" style="display: none;">
-            <div class="updown_bg"></div>
-            <div class="updown_content">
-                <div style="width: 100%; height: 6rem; position: relative; overflow: hidden; margin-top: 2rem; background: rgb(204, 204, 204);">
-                    <div style="position: absolute; top: 0px; left: 0px; width: 100%; height: 6rem; text-align: center; line-height: 6rem; font-size: 0.42rem;">
-                        请上传图片
+<extend name="Public/base" />
+<block name="main">
+    <div von-app="" transition-direction="forward">
+        <div class="page has-navbar">
+            <!--头像上传---start-->
+            <div class="updown" style="display: none;">
+                <div class="updown_bg"></div>
+                <div class="updown_content">
+                    <div style="width: 100%; height: 6rem; position: relative; overflow: hidden; margin-top: 2rem; background: rgb(204, 204, 204);">
+                        <div style="position: absolute; top: 0px; left: 0px; width: 100%; height: 6rem; text-align: center; line-height: 6rem; font-size: 0.42rem;">
+                            请上传图片
+                        </div>
+                        <img src="" id="selectImage"></div>
+                    <div class="upload_box">
+                        <div class="fl upload_add_box">
+                            <div class="upload_add"><input type="file" id="uploadFile" accept="image">上传头像</div>
+                            <div class="button_img sure">确定</div>
+                        </div>
+                        <div class="clearfix"></div>
                     </div>
-                    <img src="" id="selectImage"></div>
-                <div class="upload_box">
-                    <div class="fl upload_add_box">
-                        <div class="upload_add"><input type="file" id="uploadFile" accept="image">上传头像</div>
-                        <div class="button_img sure">确定</div>
-                    </div>
-                    <div class="clearfix"></div>
                 </div>
+                <div class="upload-close"></div>
             </div>
-            <div class="upload-close"></div>
-        </div>
-        <!--头像上传---end-->
-        <div id="outer-5yg1l" class="_v-container" style="width: 100%; height: 100%;">
-            <div id="inner-jz4s1" class="_v-content"
-                 style="transform: translate3d(0px, 0px, 0px) scale(1);"><!---->
-                <div id="means_bigbox">
-                    <div class="means_title">个人资料</div>
-                    <!--个人资料内容---start---->
-                    <div class="means_box">
-                        <div id="set-avatar" class="means_header_box">
-                            <div class="fl means_header_title nickname_title">头像</div>
-                            <div class="fr means_header_img">
-                                <img src="__PUBLIC__/demo/noavatar_middle.gif" id="upload_head">
-                            </div>
-                            <div class="fr"
-                                 style="position: absolute; top: 50%; transform: translateY(-50%); right: 0px;"><img
-                                   
-                                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAgCAYAAAAffCjxAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTM4IDc5LjE1OTgyNCwgMjAxNi8wOS8xNC0wMTowOTowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTcgKFdpbmRvd3MpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjk4NzEwNTY4MTlDRjExRTdCRjI5OEMxRTRFNTM2RDNGIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjk4NzEwNTY5MTlDRjExRTdCRjI5OEMxRTRFNTM2RDNGIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6OTg3MTA1NjYxOUNGMTFFN0JGMjk4QzFFNEU1MzZEM0YiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6OTg3MTA1NjcxOUNGMTFFN0JGMjk4QzFFNEU1MzZEM0YiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4dFJHAAAABfklEQVR42qSUPShFYRjHX9cZWDApg1AsJNdXMZCSfKWwMRhZ7sDMJrJRBp2bTdhYFNI1UMpnFFIWDJJBsRgY/N56bp1B97z3Of/6dZ7TOf06p+d5nxzf92+NMS/QZyIkBjXQCyeQH0XUAt/QCjdQohWdQh28QRVcQ7VGZPMosnsoli9r04hs3iEOx+DBEQxpRDY/0A7bcr8F4xpROsOQlNqHGa3IZgLmpJ6FRa3IyJdMST0JG1qRzRKMSj0Ce1qRzSb0SN0Nl1CgEdnsQyN8QYPMWplGZHMlg/sM5SKLa0Q2TyKzR6kQLqAypjzsn1Avg5trxyRmouVQrhVRRAlYlnpVK1oISOw16Skk64EBnYZ5I+vCNXmwCx1yPwZr6YeuolJIyQb9lSlPBV9wETXDgczMK3TCQ7ZnbRDORGKnuvY/SZgoEdiUO3LOPrJdI8H2rsBA2P97ru3NRpSxva6i0Pa6iJqkvUWZ2usiOg8sra5MnQkT3cnG64+yT/4EGABWNk5lngGOIwAAAABJRU5ErkJggg==">
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="means_header_box" style="height: 1rem;">
-                            <div class="fl means_user_title nickname_title"
-                                 style="height: 1rem; line-height: 1rem;">用户名
-                            </div>
-                            <div class="fl means_user_name nickname_inport"
-                                 style="height: 0.6rem; line-height: 0.6rem;">twm_38d4e0914<span
-                                                                                                 style="font-size: 0.22rem; position: absolute; right: 0px; color: rgb(153, 153, 153);">此项不可修改</span>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="means_header_box" style="height: 1rem;">
-                            <div class="fl nickname_title" style="height: 1rem; line-height: 1rem;">
-                                昵称
-                            </div>
-                            <input placeholder="请输入昵称" id="nickname_inport"
-                                   class="fl nickname_inport">
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="means_header_box" style="height: 1rem;">
-                            <div class="fl nickname_title" style="height: 1rem; line-height: 1rem;">
-                                QQ
-                            </div>
-                            <input placeholder="请输入QQ号" id="nickname_qq" type="Number"
-                                   class="fl nickname_inport">
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="means_header_box" style="height: 1rem;">
-                            <div class="fl means_user_title nickname_title"
-                                 style="height: 1rem; line-height: 1rem;">性别
-                            </div>
-                            <div class="fl means_user_name nickname_inport"
-                                 style="height: 0.6rem; line-height: 0.6rem;"></div>
-                            <div class="clearfix"></div>
-                            <select
-                                    style="position: absolute; width: 100%; height: 100%; left: 0px; top: 0px; z-index: 9; opacity: 0;">
-                                <option value="0">请选择</option>
-                                <option value="1">男</option>
-                                <option value="2">女</option>
-                            </select></div>
-                        <div class="means_header_box" style="height: 1rem;">
-                            <div class="fl means_user_title nickname_title"
-                                 style="height: 1rem; line-height: 1rem;">生日
-                            </div>
-                            <div class="fl means_user_name nickname_inport ruzhuinfo-birthday"
-                                 style="height: 0.6rem; line-height: 0.6rem;"><input type="date"
-                                                                                     name="dateBirthday">
+            <!--头像上传---end-->
+            <div id="outer-5yg1l" class="_v-container" style="width: 100%; height: 100%;">
+                <div id="inner-jz4s1" class="_v-content"
+                     style="transform: translate3d(0px, 0px, 0px) scale(1);"><!---->
+                    <div id="means_bigbox">
+                        <div class="means_title">个人资料</div>
+                        <!--个人资料内容---start---->
+                        <div class="means_box">
+                            <div id="set-avatar" class="means_header_box">
+                                <div class="fl means_header_title nickname_title">头像</div>
+                                <div class="fr means_header_img">
+                                    <img src="__PUBLIC__/demo/noavatar_middle.gif" id="upload_head">
+                                </div>
+                                <div class="fr"
+                                     style="position: absolute; top: 50%; transform: translateY(-50%); right: 0px;"><img
 
+                                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAgCAYAAAAffCjxAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTM4IDc5LjE1OTgyNCwgMjAxNi8wOS8xNC0wMTowOTowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTcgKFdpbmRvd3MpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjk4NzEwNTY4MTlDRjExRTdCRjI5OEMxRTRFNTM2RDNGIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjk4NzEwNTY5MTlDRjExRTdCRjI5OEMxRTRFNTM2RDNGIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6OTg3MTA1NjYxOUNGMTFFN0JGMjk4QzFFNEU1MzZEM0YiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6OTg3MTA1NjcxOUNGMTFFN0JGMjk4QzFFNEU1MzZEM0YiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4dFJHAAAABfklEQVR42qSUPShFYRjHX9cZWDApg1AsJNdXMZCSfKWwMRhZ7sDMJrJRBp2bTdhYFNI1UMpnFFIWDJJBsRgY/N56bp1B97z3Of/6dZ7TOf06p+d5nxzf92+NMS/QZyIkBjXQCyeQH0XUAt/QCjdQohWdQh28QRVcQ7VGZPMosnsoli9r04hs3iEOx+DBEQxpRDY/0A7bcr8F4xpROsOQlNqHGa3IZgLmpJ6FRa3IyJdMST0JG1qRzRKMSj0Ce1qRzSb0SN0Nl1CgEdnsQyN8QYPMWplGZHMlg/sM5SKLa0Q2TyKzR6kQLqAypjzsn1Avg5trxyRmouVQrhVRRAlYlnpVK1oISOw16Skk64EBnYZ5I+vCNXmwCx1yPwZr6YeuolJIyQb9lSlPBV9wETXDgczMK3TCQ7ZnbRDORGKnuvY/SZgoEdiUO3LOPrJdI8H2rsBA2P97ru3NRpSxva6i0Pa6iJqkvUWZ2usiOg8sra5MnQkT3cnG64+yT/4EGABWNk5lngGOIwAAAABJRU5ErkJggg==">
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="means_header_box" style="height: 1rem;">
+                                <div class="fl means_user_title nickname_title"
+                                     style="height: 1rem; line-height: 1rem;">用户名
+                                </div>
+                                <div class="fl means_user_name nickname_inport"
+                                     style="height: 0.6rem; line-height: 0.6rem;">twm_38d4e0914<span
+                                        style="font-size: 0.22rem; position: absolute; right: 0px; color: rgb(153, 153, 153);">此项不可修改</span>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="means_header_box" style="height: 1rem;">
+                                <div class="fl nickname_title" style="height: 1rem; line-height: 1rem;">
+                                    昵称
+                                </div>
+                                <input placeholder="请输入昵称" id="nickname_inport"
+                                       class="fl nickname_inport">
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="means_header_box" style="height: 1rem;">
+                                <div class="fl nickname_title" style="height: 1rem; line-height: 1rem;">
+                                    QQ
+                                </div>
+                                <input placeholder="请输入QQ号" id="nickname_qq" type="Number"
+                                       class="fl nickname_inport">
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="means_header_box" style="height: 1rem;">
+                                <div class="fl means_user_title nickname_title"
+                                     style="height: 1rem; line-height: 1rem;">性别
+                                </div>
+                                <div class="fl means_user_name nickname_inport"
+                                     style="height: 0.6rem; line-height: 0.6rem;"></div>
+                                <div class="clearfix"></div>
+                                <select
+                                        style="position: absolute; width: 100%; height: 100%; left: 0px; top: 0px; z-index: 9; opacity: 0;">
+                                    <option value="0">请选择</option>
+                                    <option value="1">男</option>
+                                    <option value="2">女</option>
+                                </select></div>
+                            <div class="means_header_box" style="height: 1rem;">
+                                <div class="fl means_user_title nickname_title"
+                                     style="height: 1rem; line-height: 1rem;">生日
+                                </div>
+                                <div class="fl means_user_name nickname_inport ruzhuinfo-birthday"
+                                     style="height: 0.6rem; line-height: 0.6rem;"><input type="date"
+                                                                                         name="dateBirthday">
+
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="means_header_box" style="height: 1rem;">
+                                <div class="fl means_user_title nickname_title"
+                                     style="height: 1rem; line-height: 1rem;">城市
+                                </div>
+                                <div class="fl means_user_name nickname_inport"
+                                     style="height: 0.6rem; line-height: 0.6rem;">请设置您所在城市
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="means_header_box" style="height: 1rem;">
+                                <div class="fl means_user_title nickname_title"
+                                     style="height: 1rem; line-height: 1rem;">手机号
+                                </div>
+                                <div class="fl means_user_name nickname_inport"
+                                     style="height: 0.6rem; line-height: 0.6rem;">176****6931
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                        <!--个人资料内容---end------>
+                        <!--资料未完成框---start---->
+                        <div class="online_back_box means_back_box" style="display: none;">
+                            <div class="fl online_back" style="color: rgb(255, 98, 107);">完善个人信息</div>
+                            <div class="fr" style="position: absolute; top: 50%; transform: translateY(-50%); right: 0.2rem;">
+                                <img src="__PUBLIC__/demo/right_icon.png">
                             </div>
                             <div class="clearfix"></div>
                         </div>
-                        <div class="means_header_box" style="height: 1rem;">
-                            <div class="fl means_user_title nickname_title"
-                                 style="height: 1rem; line-height: 1rem;">城市
-                            </div>
-                            <div class="fl means_user_name nickname_inport"
-                                 style="height: 0.6rem; line-height: 0.6rem;">请设置您所在城市
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="means_header_box" style="height: 1rem;">
-                            <div class="fl means_user_title nickname_title"
-                                 style="height: 1rem; line-height: 1rem;">手机号
-                            </div>
-                            <div class="fl means_user_name nickname_inport"
-                                 style="height: 0.6rem; line-height: 0.6rem;">176****6931
+                        <!--资料未完成框---end----->
+                        <div class="online_back_box means_back_box" style="margin-top: 0.2rem;">
+                            <div class="fl online_back">返回上一页</div>
+                            <div class="fr" style="position: absolute; top: 50%; transform: translateY(-50%); right: 0.2rem;">
+                                <img src="__PUBLIC__/demo/right_icon.png">
                             </div>
                             <div class="clearfix"></div>
                         </div>
+                        <div style="height: 2rem;"></div>
+                    </div> <!---->
+                </div>
+            </div>
+            <!--手机验证码验证弹出----start-->
+            <div class="page_pop_up" style="display: none;">
+                <div class="binding_bg"></div>
+                <div class="binding_box">
+                    <div class="popuTitle">绑定手机号</div>
+                    <div class="phone_01" style="margin-top: 0.2rem;"><input placeholder="请输入手机号" id="bingphone" type="tel"></div>
+                    <div class="phone_02" style="padding: 0.2rem 0px 0.2rem 7%;">
+                        <input placeholder="请输入验证码" id="phonecode" type="tel" style="margin: 0px;">
+                        <label id="gaincode" style="margin: 0px; color: rgb(51, 51, 51);">获取验证码</label>
                     </div>
-                    <!--个人资料内容---end------>
-                    <!--资料未完成框---start---->
-                    <div class="online_back_box means_back_box" style="display: none;">
-                        <div class="fl online_back" style="color: rgb(255, 98, 107);">完善个人信息</div>
-                        <div class="fr" style="position: absolute; top: 50%; transform: translateY(-50%); right: 0.2rem;">
-                            <img src="__PUBLIC__/demo/right_icon.png">
-                        </div>
+                    <div class="phone_03" style="display: none;"><img
+                            src="__PUBLIC__/demo/warning.png">
+                    </div>
+                    <div class="page_pop_nobox">
+                        <div class="page_no fl">取消</div>
+                        <div class="page_yes fl">确认</div>
                         <div class="clearfix"></div>
                     </div>
-                    <!--资料未完成框---end----->
-                    <div class="online_back_box means_back_box" style="margin-top: 0.2rem;">
-                        <div class="fl online_back">返回上一页</div>
-                        <div class="fr" style="position: absolute; top: 50%; transform: translateY(-50%); right: 0.2rem;">
-                            <img src="__PUBLIC__/demo/right_icon.png">
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div style="height: 2rem;"></div>
-                </div> <!---->
-            </div>
-        </div>
-        <!--手机验证码验证弹出----start-->
-        <div class="page_pop_up" style="display: none;">
-            <div class="binding_bg"></div>
-            <div class="binding_box">
-                <div class="popuTitle">绑定手机号</div>
-                <div class="phone_01" style="margin-top: 0.2rem;"><input placeholder="请输入手机号" id="bingphone" type="tel"></div>
-                <div class="phone_02" style="padding: 0.2rem 0px 0.2rem 7%;">
-                    <input placeholder="请输入验证码" id="phonecode" type="tel" style="margin: 0px;">
-                    <label id="gaincode" style="margin: 0px; color: rgb(51, 51, 51);">获取验证码</label>
-                </div>
-                <div class="phone_03" style="display: none;"><img
-                        src="__PUBLIC__/demo/warning.png">
-                </div>
-                <div class="page_pop_nobox">
-                    <div class="page_no fl">取消</div>
-                    <div class="page_yes fl">确认</div>
-                    <div class="clearfix"></div>
                 </div>
             </div>
+            <!--手机验证码验证弹出----end-->
+            <div class="clearfix"></div>
+            <div class="keep">保存</div>
         </div>
-        <!--手机验证码验证弹出----end-->
-        <div class="clearfix"></div>
-        <div class="keep">保存</div>
     </div>
-</div>
-</body>
-</html>
+</block>
+<html style="font-size: 100px;">

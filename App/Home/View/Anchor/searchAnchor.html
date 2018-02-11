@@ -1,44 +1,35 @@
-<html style="font-size: 100px;">
-<head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="__PUBLIC__/home/js/vonic/vonic.min.css">
-    <link rel="stylesheet" href="__PUBLIC__/home/css/app.css">
-    <link rel="stylesheet" href="__PUBLIC__/home/css/public.css">
-    <script src="__PUBLIC__/home/js/public.js"></script>
-    <title>{$meta_title}</title>
-</head>
-<body class="grade-a">
-<div von-app="" transition-direction="forward">
-    <div class="page has-navbar has-tabbar">
-        <div id="outer-3qr1w" class="_v-container" style="width: 100%; height: 100%;">
-            <div id="inner-5ci0n" class="_v-content"
-                 style="transform: translate3d(0px, 0px, 0px) scale(1);"><!---->
-                <div class="divSearchContent">
-                    <div class="divSearchInput">
-                        <div style="float: left; width: 84%; position: relative; height: 0.6rem;">
-                            <form action="">
-                                <input type="text" aria-label="搜索" placeholder="搜索昵称" class="inputSearch">
-                                <img src="__PUBLIC__/demo/error_s.png" class="searchdelete" style="display: none;">
-                            </form>
+<extend name="Public/base" />
+<block name="main">
+    <div von-app="" transition-direction="forward">
+        <div class="page has-navbar has-tabbar">
+            <div id="outer-3qr1w" class="_v-container" style="width: 100%; height: 100%;">
+                <div id="inner-5ci0n" class="_v-content"
+                     style="transform: translate3d(0px, 0px, 0px) scale(1);"><!---->
+                    <div class="divSearchContent">
+                        <div class="divSearchInput">
+                            <div style="float: left; width: 84%; position: relative; height: 0.6rem;">
+                                <form action="">
+                                    <input type="text" aria-label="搜索" placeholder="搜索昵称" class="inputSearch">
+                                    <img src="__PUBLIC__/demo/error_s.png" class="searchdelete" style="display: none;">
+                                </form>
+                            </div>
+                            <button>取消</button>
+                            <img
+                                    src="__PUBLIC__/demo/divHomeSearch.png"
+                                    class="searchicon"></div>
+                        <div class="divSearchHistory"><p>热门搜索</p>
+                            <ul>
+                                <li>琪琪q</li>
+                                <li>艾琳baby</li>
+                                <li>小笑笑</li>
+                            </ul>
                         </div>
-                        <button>取消</button>
-                        <img
-                             src="__PUBLIC__/demo/divHomeSearch.png"
-                             class="searchicon"></div>
-                    <div class="divSearchHistory"><p>热门搜索</p>
-                        <ul>
-                            <li>琪琪q</li>
-                            <li>艾琳baby</li>
-                            <li>小笑笑</li>
-                        </ul>
-                    </div>
-                    <div class="divSearchResult" style="display: none;">
-                        <ul></ul>
-                    </div>
-                </div> <!---->
+                        <div class="divSearchResult" style="display: none;">
+                            <ul></ul>
+                        </div>
+                    </div> <!---->
+                </div>
             </div>
         </div>
     </div>
-</div>
-</body>
-</html>
+</block>
