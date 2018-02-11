@@ -93,9 +93,10 @@
                                             <td>{$val['phone']}</td>
                                             <td class="center">{$val['balance']}</td>
                                             <td class="center">{$val['t']|date="Y-m-d",###}</td>
-                                            <td class="center"><a href="{:U('edit',array('uid'=>$val['uid']))}">修改</a>&nbsp;
-                                                <if condition="$val['uid'] neq 1"><a class="del" href="javascript:;"
-                                                                                     val="{:U('del',array('uid'=>$val['uid']))}"
+                                            <td class="center"><a href="{:U('edit',array('anchor_id'=>$val['anchor_id']))}">修改</a>&nbsp;
+                                                <if condition="$val['uid'] neq 1">
+                                                    <a class="del" href="javascript:;"
+                                                       val="{:U('del',array('anchor_id'=>$val['anchor_id']))}"
                                                                                      title="删除">删除</a></if>
                                             </td>
                                         </tr>

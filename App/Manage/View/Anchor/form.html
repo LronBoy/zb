@@ -27,16 +27,11 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right"> 用户名 </label>
                                 <div class="col-sm-9">
-                                    <input type="text"
-                                    <if condition="$member['uid'] eq 1">readonly
-                                        <else/>
-                                        name="user"
-                                    </if>
-                                    class="rcol-xs-10 col-sm-5" value="{$member.user}">
+                                    <input type="text" readonly class="rcol-xs-10 col-sm-5" value="{$anchor.user}">
                                     <input type="hidden" name="uid" value="{$member['uid']}">
                                     <span class="help-inline col-xs-12 col-sm-7">
-											<if condition="$member['uid'] eq 1"><span class="middle">无法修改</span></if>
-											</span>
+                                        <span class="middle">无法修改</span>
+                                    </span>
                                 </div>
                             </div>
 
@@ -45,10 +40,10 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right"> 昵称 </label>
                                 <div class="col-sm-9">
-                                    <input type="text" name="username" class="rcol-xs-10 col-sm-5" value="{$member.username}">
+                                    <input type="text" name="username" <if condition="anchor['uid'] eq 1">readonly</if> class="rcol-xs-10 col-sm-5" value="{$anchor.username}">
                                     <span class="help-inline col-xs-12 col-sm-7">
-											<if condition="$member['uid'] eq 1"><span class="middle">无法修改</span></if>
-											</span>
+                                        <if condition="anchor['uid'] eq 1"><span class="middle">无法修改</span></if>
+                                    </span>
                                 </div>
                             </div>
 
@@ -58,49 +53,17 @@
                                     主播分类 </label>
                                 <div class="col-sm-9">
                                     <div class="col-sm-10">
-                                            <div class="widget-body">
-                                                <div class="widget-main row">
-                                                    <volist name="category" id="vv">
-                                                        <label class="col-xs-2" style="width:160px;">
-                                                            <input name="serve_type[]" class="ace ace-checkbox-2 children" <?php if(in_array($vv['id'],$group['rules'])){echo 'checked="checked"';};?> type="checkbox" value="{$vv['id']}"/>
-                                                            <span class="lbl"> {$vv['name']}</span>
-                                                        </label>
-                                                    </volist>
-                                                </div>
+                                        <div class="widget-body">
+                                            <div class="widget-main row">
+                                                <volist name="category" id="vv">
+                                                    <label class="col-xs-2" style="width:160px;">
+                                                        <input name="serve_type[]" class="ace ace-checkbox-2 children" <?php if(in_array($vv['serve_type_id'],$anchor_category)){echo 'checked="checked"';};?> type="checkbox" value="{$vv['serve_type_id']}"/>
+                                                        <span class="lbl"> {$vv['title']}</span>
+                                                    </label>
+                                                </volist>
                                             </div>
-
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-
-                            <div class="space-4"></div>
-
-                            <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right"> 用户组 </label>
-                                <div class="col-sm-9">
-                                    <if condition="$member['uid'] eq 1">
-                                        <volist name="usergroup" id="val">
-                                            <if condition="$val['id'] eq $member['group_id']">
-                                                <input type="text" class="col-xs-10 col-sm-5" value="{$val['title']}"
-                                                       readonly>
-                                                <input type="hidden" name="group_id" id="group_id"
-                                                       class="col-xs-10 col-sm-5" value="{$member['group_id']}">
-                                            </if>
-                                        </volist>
-
-                                        <else/>
-                                        <select id="group_id" name="group_id" class="rcol-xs-10 col-sm-5">
-                                            <volist name="usergroup" id="val">
-                                                <option value="{$val['id']}"
-                                                <if condition="$val['id'] eq $member['group_id']">selected="selected"
-                                                </if>
-                                                >{$val['title']}</option>
-                                            </volist>
-                                        </select>
-                                    </if>
-                                    <span class="help-inline col-xs-12 col-sm-7">
-												<span class="middle">请慎重选择用户组</span>
-											</span>
                                 </div>
                             </div>
 
@@ -109,30 +72,28 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right"> 设置等级 </label>
                                 <div class="col-sm-9">
-                                    <select  name="class_id" class="rcol-xs-10 col-sm-5">
-                                        <volist name="user_class" id="vuc" key="vuk">
-                                            <option value="{$vuk}"
-                                            <if condition="$vuk eq $member['class']">selected="selected"
-                                            </if>
-                                            >{$vuc}</option>
-                                        </volist>
-                                    </select>
-                                    <span class="help-inline col-xs-12 col-sm-7">
-												<span class="middle"></span>
-											</span>
+                                    <!--TODO: 后期开发自定义游戏等级，暂时设置成2级-->
+                                    <input type="password" readonly placeholder="后期开发自定义服务分类等级，暂设成2级" class="col-xs-10 col-sm-5" value="">
                                 </div>
                             </div>
 
                             <div class="space-4"></div>
-
                             <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right"> 用户密码 </label>
+                                <label class="col-sm-1 control-label no-padding-right">
+                                    接单时间 </label>
                                 <div class="col-sm-9">
-                                    <input type="password" name="password" id="password" placeholder="用户密码"
-                                           class="col-xs-10 col-sm-5" value="">
-                                    <span class="help-inline col-xs-12 col-sm-7">
-												<span class="middle">留空不修改</span>
-											</span>
+                                    <div class="col-sm-10">
+                                        <div class="widget-body">
+                                            <div class="widget-main row">
+                                                <volist name="order_time" id="vv">
+                                                    <label class="col-xs-2" style="width:160px;">
+                                                        <input name="order_time[]" class="ace ace-checkbox-2 children" <?php if(in_array($vv['serve_type_id'],$anchor_category)){echo 'checked="checked"';};?> type="checkbox" value="{$vv['serve_type_id']}"/>
+                                                        <span class="lbl"> {$vv['title']}</span>
+                                                    </label>
+                                                </volist>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 

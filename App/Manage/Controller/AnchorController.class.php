@@ -114,21 +114,40 @@ class AnchorController extends ComController{
     }
 
     public function edit(){
-        $uid = isset($_GET['uid']) ? intval($_GET['uid']) : false;
-        if ($uid) {
+        $anchor_id = isset($_GET['anchor_id']) ? intval($_GET['anchor_id']) : false;
+        if ($anchor_id) {
             //$member = M('member')->where("uid='$uid'")->find();
             $prefix = C('DB_PREFIX');
-            $user = M('member');
-            $member = $user->field("{$prefix}member.*,{$prefix}auth_group_access.group_id")->join("{$prefix}auth_group_access ON {$prefix}member.uid = {$prefix}auth_group_access.uid")->where("{$prefix}member.uid=$uid")->find();
-
+            $anchor = M('anchor');
+	        $anchor = $anchor->field("{$prefix}anchor.*,{$prefix}member.user,{$prefix}member.username,{$prefix}member.phone")
+	            ->join("{$prefix}member ON {$prefix}anchor.uid = {$prefix}member.uid")
+	            ->where("{$prefix}anchor.anchor_id=$anchor_id")
+	            ->find();
+	        $this->assign('anchor', $anchor);
+	        
+	        $map = array('anchor_id' => $anchor_id);
+	        $anchor_type = M('anchorType')->where($map)->select();
+	        $anchor_type_array = array();
+	        if($anchor_type){
+	            $anchor_type_array = array_column($anchor_type, 'serve_id');
+	        }
+	        
+	        $this->assign('anchor_category', $anchor_type_array);
+	        
         } else {
             $this->error('参数错误！');
         }
-
-        $usergroup = M('auth_group')->field('id,title')->select();
-        $this->assign('usergroup', $usergroup);
-
-        $this->assign('member', $member);
+	    
+        //接单时间
+	    $order_time = C('ANCHOR_BUSINESS_HOURS');
+        $this->assign('order_time', $order_time);
+        
+	    
+        $where = array('status' => 1);
+        $category = M('serveType')->where($where)->select();
+	    
+        $this->assign('category', $category);
+        
         $this->display('form');
     }
 
