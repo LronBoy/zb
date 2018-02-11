@@ -1,0 +1,78 @@
+<html style="font-size: 100px;">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="__PUBLIC__/home/vonic/vonic.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/home/css/app.css">
+    <link rel="stylesheet" href="__PUBLIC__/home/css/public.css">
+    <script src="__PUBLIC__/home/js/public.js"></script>
+    <title>{$meta_title}</title>
+</head>
+<body class="grade-a">
+<div von-app="" transition-direction="forward">
+    <div id="outer-5lhc8" class="_v-container" style="width: 100%; height: 100%;">
+        <div id="inner-o1mn3" class="_v-content" style="transform: translate3d(0px, 0px, 0px) scale(1);"><!---->
+            <div class="recharge_big">
+                <div class="recharge_residue_title">约玩币：<span>0.00</span></div>
+                <div class="recharge_box">
+                    <div class="recharge_title">充值<span>充值金额不能提现</span></div>
+                    <ul id="recharge_money" class="recharge_money_box">
+                        <li class="li_add"><span>50</span>元</li>
+                        <li class=""><span>100</span>元</li>
+                        <li class=""><span>500</span>元</li>
+                        <li class=""><span>1000</span>元</li>
+                        <li class=""><span>3000</span>元</li>
+                        <li class=""><span>6666</span>元</li>
+                    </ul>
+                    <input placeholder="输入充值金额" type="Number" class="money_inport">
+                    <div class="money_inport_text">元</div>
+                    <div class="money_warn">兑换比例：1元=1约玩币，充值不可少于10元。</div>
+                </div>
+                <div class="payoff_choose_c">支付方式</div>
+                <div class="wechat_img_bigbox">
+                    <!--微信支付---start-->
+                    <div class="wechat_img_box_cz" style="display: none;">
+                        <div class="fl wechat_img"><img src="__PUBLIC__/demo/wechat_icon.png"></div>
+                        <div class="fl wechat_text">微信支付</div>
+                        <div class="fr star_sure star_sure_add"><img src="__PUBLIC__/demo/succeed.png"></div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <!--微信支付----end--->
+                    <!--支付宝支付---start-->
+                    <div class="wechat_img_box_cz" style="">
+                        <div class="fl wechat_img"><img src="__PUBLIC__/demo/alipay_icon.png"></div>
+                        <div class="fl wechat_text">支付宝支付</div>
+                        <div class="fr star_sure  star_sure_add"><img src="__PUBLIC__/demo/succeed.png"></div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <div class="online_back_box recharge_online_back_box">
+                    <div class="fl online_back">返回上一页</div>
+                    <div class="fr"><img src="__PUBLIC__/demo/right_icon.png"></div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="annotate">
+                    注：一天内未支付订单超过5个，当日将无法继续下单。
+                    <p style="color: rgb(71, 93, 137);">&nbsp;充值带你秒升VIP，最高享8折优惠！【<span>查看折扣等级</span>】</p>
+                </div>
+            </div> <!----></div>
+    </div>
+</div>
+
+
+<div id="divpopup">
+    <div class="sure_payfor">确认支付￥<span id="sure_money">50</span>元</div>
+</div>
+<!--确认支付错误弹窗---start-->
+<div id="divwarn" style="display: none;">
+    <div class="page_pop_up">
+        <div class="pop_up_bg"></div>
+        <div class="pop_up_warn">
+            <div class="warn_img"><img src="__PUBLIC__/demo/warning_big.png"></div>
+            <div class="money_title">金额输入错误，充值不可少于10元</div>
+            <div class="warn_time">[ 3秒 ]</div>
+        </div>
+    </div>
+</div>
+<!--确认支付错误弹窗---end---->
+</body>
+</html>

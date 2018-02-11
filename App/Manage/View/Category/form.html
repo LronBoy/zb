@@ -1,0 +1,162 @@
+<include file="Public/head"/>
+<body class="no-skin">
+<include file="Public/header"/>
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try {
+            ace.settings.check('main-container', 'fixed')
+        } catch (e) {
+        }
+    </script>
+
+    <include file="Public/sidebar"/>
+    <div class="main-content">
+        <div class="main-content-inner">
+            <!-- #section:basics/content.breadcrumbs -->
+            <include file="Public/breadcrumbs"/>
+
+            <!-- /section:basics/content.breadcrumbs -->
+            <div class="page-content">
+                <include file="Public/set"/>
+
+                <!-- /section:settings.box -->
+                <div class="row">
+                    <div class="col-xs-12">
+                        <!-- PAGE CONTENT BEGINS -->
+                        <form class="form-horizontal" role="form" id="form" method="post" action="{:U('update')}">
+                            <input name="id" id="id" value="{$currentcategory.id}" type="hidden">
+
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" for="name"> 分类名称 </label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="name" id="name" placeholder="分类名称"
+                                           class="col-xs-10 col-sm-5" value="{$currentcategory.name}">
+                                    <span class="help-inline col-xs-12 col-sm-7">
+												<span class="middle">分类名称，不能为空。</span>
+											</span>
+                                </div>
+                            </div>
+
+                            <div class="space-4"></div>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right"> 图标 </label>
+                                <div class="col-sm-9">
+                                    <div class="col-xs-10 col-sm-5">{:UpImage("image",100,100,$currentcategory['image'])}</div>
+                                    <span class="help-inline col-xs-12 col-sm-7">
+												<span class="middle">仅支持jpg、gif、png、bmp、jpeg，且小于1MB。</span>
+											</span>
+                                </div>
+
+                            </div>
+
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" for="type"> 收费方式 </label>
+                                <div class="col-sm-9">
+                                    <select id="type" name="type" class="col-xs-10 col-sm-5">
+                                        <option value="1"
+                                        <if condition="$currentcategory['type'] eq 1">selected="selected"</if>
+                                        >小时</option>
+                                        <option value="2"
+                                        <if condition="$currentcategory['type'] eq 2">selected="selected"</if>
+                                        >天</option>
+                                        <option value="3"
+                                        <if condition="$currentcategory['type'] eq 3">selected="selected"</if>
+                                        >次</option>
+                                        <option value="4"
+                                        <if condition="$currentcategory['type'] eq 4">selected="selected"</if>
+                                        >局</option>
+                                        <option value="5"
+                                        <if condition="$currentcategory['type'] eq 5">selected="selected"</if>
+                                        >首</option>
+                                    </select>
+
+                                    <span class="help-inline col-xs-12 col-sm-7">
+												<span class="middle">栏目类型。</span>
+											</span>
+                                </div>
+                            </div>
+
+                <div class="space-4"></div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label no-padding-right" for="o"> 排序 </label>
+                    <div class="col-sm-9">
+                        <input type="number" name="o" id="o" placeholder="排序" class="col-xs-10 col-sm-5"
+                               value="{$currentcategory.o}">
+                        <span class="help-inline col-xs-12 col-sm-7">
+												<span class="middle">越小越靠前。</span>
+											</span>
+                    </div>
+                </div>
+
+                <div class="col-md-offset-2 col-md-9">
+                    <button class="btn btn-info submit" type="button">
+                        <i class="icon-ok bigger-110"></i>
+                        提交
+                    </button>
+
+                    &nbsp; &nbsp; &nbsp;
+                    <button class="btn" type="reset">
+                        <i class="icon-undo bigger-110"></i>
+                        重置
+                    </button>
+                </div>
+                </form>
+                <!-- PAGE CONTENT ENDS -->
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.page-content -->
+</div>
+</div><!-- /.main-content -->
+<include file="Public/footer"/>
+
+</div><!-- /.main-container -->
+
+<include file="Public/footerjs"/>
+<!-- inline scripts related to this page -->
+<script type="text/javascript">
+    $(function () {
+        var editor = KindEditor.create('textarea[name="content"]', {
+            uploadJson: '__PUBLIC__/kindeditor/php/upload_json.php',
+            fileManagerJson: '__PUBLIC__/kindeditor/php/file_manager_json.php',
+            allowFileManager: true,
+            afterBlur: function () {
+                this.sync();
+            }
+        });
+        $("#type").change(function () {
+
+            if ($(this).val() == 1) {
+                $("#type1").removeClass('hidden');
+                $("#type2").addClass('hidden');
+            } else if ($(this).val() == 2) {
+                $("#type2").removeClass('hidden');
+                $("#type1").addClass('hidden');
+            } else {
+                $("#type1").addClass('hidden');
+                $("#type2").addClass('hidden');
+            }
+        });
+        $(".btn.btn-info.submit").click(function () {
+            var name = $("#name").val();
+            if (name == '') {
+                bootbox.dialog({
+                    message: "抱歉，分类名称不能为空。",
+                    buttons: {
+                        "success": {
+                            "label": "确定",
+                            "className": "btn-danger"
+                        }
+                    }
+                });
+                return false;
+            }
+            $("#form").submit();
+
+        })
+    })
+</script>
+</body>
+</html>

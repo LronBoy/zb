@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{$mate_title}</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="description" content="">
+    <link rel="stylesheet" href="__PUBLIC__/home/weui/lib/weui.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/home/weui/css/jquery-weui.css">
+    <link rel="stylesheet" href="__PUBLIC__/home/weui/css/common.css">
+    <block name="style"></block>
+</head>
+
+<body ontouchstart>
+<div class="weui-tab">
+    <div class="weui-tab__bd">
+        <div class="weui-tab__bd-item weui-tab__bd-item--active">
+            <block name="main"></block>
+        </div>
+    </div>
+    <div class="weui-tabbar">
+        <a id="index" href="{:U('Index/index')}" class="weui-tabbar__item ">
+            <!--<span class="weui-badge" style="position: absolute;top: -.4em;right: 1em;">8</span>-->
+            <div class="weui-tabbar__icon">
+                <img src="__PUBLIC__/home/weui/images/icon_nav_button.png" alt="">
+            </div>
+            <p class="weui-tabbar__label">首页</p>
+        </a>
+        <a id="order" href="{:U('Order/index')}" class="weui-tabbar__item">
+            <div class="weui-tabbar__icon">
+                <img src="__PUBLIC__/home/weui/images/icon_nav_article.png" alt="">
+            </div>
+            <p class="weui-tabbar__label">订单</p>
+        </a>
+        <a id="user" href="{:U('User/index')}" class="weui-tabbar__item">
+            <div class="weui-tabbar__icon">
+                <img src="__PUBLIC__/home/weui/images/icon_nav_cell.png" alt="">
+            </div>
+            <p class="weui-tabbar__label">我</p>
+        </a>
+    </div>
+</div>
+<script src="__PUBLIC__/home/weui/lib/jquery-2.1.4.js"></script>
+<script src="__PUBLIC__/home/weui/lib/fastclick.js"></script>
+<block name="js"></block>
+<script>
+    /*控制tabbar高亮*/
+    $(".weui-tabbar__item").removeClass('weui-bar__item--on');
+    $("#"+"{:strtolower(CONTROLLER_NAME)}").addClass('weui-bar__item--on');
+</script>
+</body>
+</html>
