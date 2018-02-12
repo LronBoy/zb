@@ -125,6 +125,9 @@ class AnchorController extends ComController{
 	            ->find();
 	        $this->assign('anchor', $anchor);
 	        
+	        //处理开始结束时间
+	        $this->assign('order_start_end', explode('-', $anchor['order_time']));
+	        
 	        $map = array('anchor_id' => $anchor_id);
 	        $anchor_type = M('anchorType')->where($map)->select();
 	        $anchor_type_array = array();
@@ -141,7 +144,6 @@ class AnchorController extends ComController{
         //接单时间
 	    $order_time = C('ANCHOR_BUSINESS_HOURS');
         $this->assign('order_time', $order_time);
-        
 	    
         $where = array('status' => 1);
         $category = M('serveType')->where($where)->select();

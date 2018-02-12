@@ -76,41 +76,38 @@
                                     <input type="password" readonly placeholder="后期开发自定义服务分类等级，暂设成2级" class="col-xs-10 col-sm-5" value="">
                                 </div>
                             </div>
-
                             <div class="space-4"></div>
+
                             <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">
-                                    接单时间 </label>
+                                <label class="col-sm-1 control-label no-padding-right"> 接单时间 </label>
                                 <div class="col-sm-9">
-                                    <div class="col-sm-10">
-                                        <div class="widget-body">
-                                            <div class="widget-main row">
-                                                <volist name="order_time" id="vv">
-                                                    <label class="col-xs-2" style="width:160px;">
-                                                        <input name="order_time[]" class="ace ace-checkbox-2 children" <?php if(in_array($vv['serve_type_id'],$anchor_category)){echo 'checked="checked"';};?> type="checkbox" value="{$vv['serve_type_id']}"/>
-                                                        <span class="lbl"> {$vv['title']}</span>
-                                                    </label>
-                                                </volist>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <select id="order_time_start" name="order_time_start">
+                                        <volist name="order_time" id="st">
+                                            <option value="{$st}" <if condition="$order_start_end[0] eq $st">selected="selected"</if>>{$st}</option>
+                                        </volist>
+                                    </select>
+                                    至
+                                    <select id="order_time_end" name="order_time_end">
+                                        <volist name="order_time" id="st">
+                                            <option value="{$st}"<if condition="$order_start_end[1] eq $st">selected="selected"</if>>{$st}</option>
+                                        </volist>
+                                    </select>
                                 </div>
                             </div>
 
-                            <div class="space-4"></div>
 
+                            <div class="space-4"></div>
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right"> 头像 </label>
                                 <div class="col-sm-9">
                                     <div class="col-xs-10 col-sm-5">{:UpImage("head",100,100,$member['head'])}</div>
                                     <span class="help-inline col-xs-12 col-sm-7">
-												<span class="middle">仅支持jpg、gif、png、bmp、jpeg，且小于1MB。</span>
-											</span>
+                                        <span class="middle">仅支持jpg、gif、png、bmp、jpeg，且小于1MB。</span>
+                                    </span>
                                 </div>
-
                             </div>
-                            <div class="space-4"></div>
 
+                            <div class="space-4"></div>
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right"> 性别 </label>
                                 <div class="col-sm-9">
@@ -243,11 +240,14 @@
                             <div class="space-4"></div>
 
                             <div class="col-md-offset-2 col-md-9">
-                                <button class="btn btn-info" type="submit">
+                                <!--<button class="btn btn-info" type="submit">
                                     <i class="icon-ok bigger-110"></i>
                                     提交
-                                </button>
-
+                                </button>-->
+                                <a href="javascript:void(0);" class="btn btn-info" type="submit">
+                                    <i class="icon-ok bigger-110"></i>
+                                    提交
+                                </a>
                                 &nbsp; &nbsp; &nbsp;
                                 <button class="btn" type="reset">
                                     <i class="icon-undo bigger-110"></i>
