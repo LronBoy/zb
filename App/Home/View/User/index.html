@@ -9,6 +9,7 @@
                             <div class="scroll-inner" style="transform: translate3d(0px, 0px, 0px);"><!---->
                                 <div class="my_content">
                                     <!--头部用户信息---start-->
+                                    <a href="{:U('user/edit')}">
                                     <div class="userinfo_content">
                                         <!--头像---start-->
                                         <img class="userinfo_header_icon" src="__PUBLIC__/demo/noavatar_middle.gif">
@@ -23,8 +24,10 @@
                                         <div class="divRightIcon"><img src="__PUBLIC__/demo/right_icon.png" class="vcenter"></div>
                                         <!--查看详情---end----->
                                     </div>
+                                    </a>
                                     <!--头部用户信息---end---->
                                     <!--我的钱包---start-->
+                                    <a href="{:U('user/account')}">
                                     <div class="useritem_content useritem_content_margintop useritem_content_borderbottom">
                                         <img src="__PUBLIC__/demo/money_icon.7ab66c0.png" class="useritem_icon fl">
                                         <div class="useritem_left fl">我的钱包<span style="display: none;"></span></div>
@@ -33,6 +36,7 @@
                                         </div> <!---->
                                         <img src="__PUBLIC__/demo/right_icon_useritem.png" class="vcenter right_icon_useritem">
                                     </div>
+                                    </a>
                                     <div class="fl user_item_money_info">
                                         <div class="fl"><p>0.00</p>
                                             <p>约玩币</p></div>
@@ -41,20 +45,24 @@
                                     </div>
                                     <!--我的钱包---end---->
                                     <!--设置中心---start-->
+                                    <a href="{:U('user/setting')}">
                                     <div class="useritem_content useritem_content_margintop useritem_content_borderbottom">
                                         <img src="__PUBLIC__/demo/setting_icon.png" class="useritem_icon fl">
                                         <div class="useritem_left fl">设置中心<span style="display: none;"></span></div>
                                         <div class="useritem_right fr"><span></span> <i style="color: rgb(255, 0, 0);"></i></div>
                                         <img src="__PUBLIC__/demo/right_icon.png" class="vcenter right_icon_useritem">
                                     </div>
+                                    </a>
                                     <!--设置中心---end---->
                                     <!--申请入驻---start-->
+                                    <a href="{:U('user/settle')}">
                                     <div class="useritem_content useritem_content_margintop useritem_content_borderbottom">
                                         <img src="__PUBLIC__/demo/useritem_icon.png" class="useritem_icon fl">
                                         <div class="useritem_left fl">申请入驻<span style="display: none;"></span></div>
                                         <div class="useritem_right fr"><span></span> <i style="color: rgb(255, 0, 0);"></i></div>
                                         <img src="__PUBLIC__/demo/right_icon.png" class="vcenter right_icon_useritem">
                                     </div>
+                                    </a>
                                     <!--申请入驻---end---->
                                     <!--联系客服---start-->
                                     <div class="useritem_content useritem_content_margintop useritem_content_borderbottom">
@@ -73,36 +81,56 @@
     </div>
 </block>
 <block name="menus">
+    <style>
+        #index,#order,#user{
+            color: rgb(51, 51, 51);
+        }
+    </style>
     <div class="tabbar visible fixed" von-tabbar="">
-        <div class="tabbar-item" style="color: rgb(51, 51, 51);">
-            <div class="icon-wrapper"><i class="icon  ion-home-outline"></i></div>
-            <div class="text-wrapper">
-                <div class="von-scalable-wrapper" style="width: 100%; height: 100%;">
-                    <div class="von-scalable"
-                         style="width: 500px; height: 46px; transform: scale(0.5, 0.5); left: -125px; top: -11.5px;"><span>首页</span>
+        <div id="index" class="tabbar-item" style="">
+            <a href="{:U('index/index')}">
+                <div class="icon-wrapper"><i class="icon ion-home-outline"></i></div>
+                <div class="text-wrapper">
+                    <div class="von-scalable-wrapper" style="width: 100%; height: 100%;">
+                        <div class="von-scalable" style="width: 500px; height: 46px; transform: scale(0.5, 0.5); left: -125px; top: -11.5px;"><span>首页</span></div>
                     </div>
                 </div>
-            </div> <!--首页-->
+            </a><!---->
         </div>
-        <div class="tabbar-item" style="color: rgb(51, 51, 51);">
-            <div class="icon-wrapper"><i class="icon  ion-cart-outline"></i></div>
-            <div class="text-wrapper">
-                <div class="von-scalable-wrapper" style="width: 100%; height: 100%;">
-                    <div class="von-scalable"
-                         style="width: 500px; height: 46px; transform: scale(0.5, 0.5); left: -125px; top: -11.5px;"><span>订单</span>
+        <div id="order" class="tabbar-item " style="">
+            <a href="{:U('order/index')}">
+                <div class="icon-wrapper"><i class="icon  ion-cart-outline"></i></div>
+                <div class="text-wrapper">
+                    <div class="von-scalable-wrapper" style="width: 100%; height: 100%;">
+                        <div class="von-scalable" style="width: 500px; height: 46px; transform: scale(0.5, 0.5); left: -125px; top: -11.5px;"><span>订单</span></div>
                     </div>
                 </div>
-            </div> <!--订单-->
+            </a>
+            <!---->
         </div>
-        <div class="tabbar-item" style="color: rgb(51, 51, 51);">
-            <div class="icon-wrapper"><i class="icon  ion-person-outline"></i></div>
-            <div class="text-wrapper">
-                <div class="von-scalable-wrapper" style="width: 100%; height: 100%;">
-                    <div class="von-scalable"
-                         style="width: 500px; height: 46px; transform: scale(0.5, 0.5); left: -125px; top: -11.5px;"><span>我的</span>
+        <div id="user" class="tabbar-item" style="">
+            <a href="{:U('user/index')}">
+                <div class="icon-wrapper"><i class="icon  ion-person-outline"></i></div>
+                <div class="text-wrapper">
+                    <div class="von-scalable-wrapper" style="width: 100%; height: 100%;">
+                        <div class="von-scalable" style="width: 500px; height: 46px; transform: scale(0.5, 0.5); left: -125px; top: -11.5px;"><span>我的</span></div>
                     </div>
-                </div>
-            </div> <!--我的-->
+                </div> <!---->
+            </a>
         </div>
     </div>
+    <script>
+        /*控制tabbar高亮*/
+        var controller_obj = $("#"+"{:strtolower(CONTROLLER_NAME)}");
+        controller_obj.attr('style','color: rgb(249, 34, 70);');
+        var controller_str ="{:strtolower(CONTROLLER_NAME)}";
+
+        if(controller_str == 'index'){
+            controller_obj.find('i').removeClass('ion-home-outline').addClass('ion-home');
+        }else if(controller_str == 'order'){
+            controller_obj.find('i').removeClass('ion-cart-outline').addClass('ion-cart');
+        }else if(controller_str == 'user'){
+            controller_obj.find('i').removeClass('ion-person-outline').addClass('ion-person');
+        }
+    </script>
 </block>

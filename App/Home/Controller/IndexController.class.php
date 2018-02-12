@@ -16,6 +16,42 @@ namespace Home\Controller;
 class IndexController extends AppController
 {
     public function index(){
+	    $prefix = C('DB_PREFIX');
+    	//banner获取
+	    $banner = M('flash') -> field('id,title,pic') -> order('o asc') -> select();
+	    $this->assign('banner', $banner);
+	    //获取分类
+	    $serve_type_total = M('serveType') ->where("status = 1") -> count();
+	    $serve_type_result   = array();
+	    if($serve_type_total){
+	        $serve_type_page     = ceil($serve_type_total/8);
+	        for ($i=0; $i<$serve_type_page; $i++){
+		        $serve_type = M('serveType') -> field('serve_type_id,title,icon') ->where("status = 1") -> order('sort asc') ->limit($i*8,8) -> select();
+	            $serve_type_result[] = $serve_type;
+	        }
+	    }else{
+	    	$this->error('没有分类');
+	    }
+	    $this->assign('serve_type', $serve_type_result);
+	
+	    
+	    
+	    //获取主播
+	    $anchor_type = M('anchorType');
+	    $serve_type_all = M('serveType') -> field('serve_type_id,title') -> where('status = 1') -> order('sort asc') -> select();
+	    foreach ($serve_type_all as $key => &$val){
+		
+		    $anchor_list = $anchor_type->field("{$prefix}anchor.*,{$prefix}member.*,{$prefix}anchor_type.serve_id,{$prefix}anchor_type.level")
+			    ->join("{$prefix}anchor ON {$prefix}anchor.anchor_id = {$prefix}anchor_type.anchor_id")
+			    ->join("{$prefix}member ON {$prefix}member.uid = {$prefix}anchor.uid")
+			    ->where("{$prefix}anchor_type.serve_id = {$val['serve_type_id']}")
+			    ->limit("3")
+			    ->select();
+		    $val['anchor_list'] = $anchor_list;
+	    }
+	    
+	    $this->assign('anchor_list', $serve_type_all);
+	    
 		$this->assign('meta_title', $this->web_name.'首页');
         $this->display();
     }
