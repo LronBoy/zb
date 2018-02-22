@@ -48,9 +48,19 @@
 												<span class="middle">仅支持jpg、gif、png、bmp、jpeg，且小于1MB。</span>
 											</span>
                                 </div>
-
                             </div>
 
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" for="name"> 分类等级 </label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="class" id="class" placeholder="分类等级,例如:铂金,钻石,大师,王者"
+                                           class="col-xs-10 col-sm-5" value="{$currentcategory.class}">
+                                    <span class="help-inline col-xs-12 col-sm-7">
+												<span class="middle">分类等级，不能为空，多个等级以英文逗号分隔。</span>
+											</span>
+                                </div>
+                            </div>
                             <div class="space-4"></div>
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right" for="type"> 收费方式 </label>

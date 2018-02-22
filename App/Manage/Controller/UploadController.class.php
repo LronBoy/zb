@@ -21,9 +21,90 @@ class UploadController extends ComController
     {
 
     }
-
-    public function uploadpic()
-    {
+	
+	/**
+	 * description: 音频上传
+	 *+-----------------------------------------------
+	 * @author:     Pante  2018/2/22 15:24
+	 * @access:     public
+	 *+-----------------------------------------------
+	 * @history:    更改记录
+	 */
+	public function uploadAudio(){
+		$mimes = array(
+			'audio/mpeg',
+		);
+		$exts = array(
+			'mp3',
+		);
+		$upload = new Upload(array(
+			'mimes' => $mimes,
+			'exts' => $exts,
+			'rootPath' => './Public/',
+			'savePath' => 'attached/'.date('Y')."/".date('m')."/",
+			'subName'  =>  array('date', 'd'),
+		));
+		$info = $upload->upload($_FILES);
+		if(!$info) {// 上传错误提示错误信息
+			$error = $upload->getError();
+			$return  = array('status' => 0, 'info' => '失败', 'data' => $error);
+		}else{// 上传成功
+			foreach ($info as $item) {
+				$filePath[] = __ROOT__."/Public/".$item['savepath'].$item['savename'];
+			}
+			$ImgStr = implode("|", $filePath);
+			$return  = array('status' => 1, 'info' => '上传成功', 'data' => $ImgStr);
+		}
+		//返回JSON数据
+		exit(json_encode($return));
+	}
+	
+	/**
+	 * description: 视频上传
+	 *+-----------------------------------------------
+	 * @author:     Pante  2018/2/22 15:24
+	 * @access:     public
+	 *+-----------------------------------------------
+	 * @history:    更改记录
+	 */
+	public function uploadVideo(){
+		$mimes = array(
+			'video/mp4',
+		);
+		$exts = array(
+			'mp4',
+		);
+		$upload = new Upload(array(
+			'mimes' => $mimes,
+			'exts' => $exts,
+			'rootPath' => './Public/',
+			'savePath' => 'attached/'.date('Y')."/".date('m')."/",
+			'subName'  =>  array('date', 'd'),
+		));
+		$info = $upload->upload($_FILES);
+		if(!$info) {// 上传错误提示错误信息
+			$error = $upload->getError();
+			$return  = array('status' => 0, 'info' => '失败', 'data' => $error);
+		}else{// 上传成功
+			foreach ($info as $item) {
+				$filePath[] = __ROOT__."/Public/".$item['savepath'].$item['savename'];
+			}
+			$ImgStr = implode("|", $filePath);
+			$return  = array('status' => 1, 'info' => '上传成功', 'data' => $ImgStr);
+		}
+		//返回JSON数据
+		exit(json_encode($return));
+	}
+	
+	/**
+	 * description: 图片上传
+	 *+-----------------------------------------------
+	 * @author:     Pante  2018/2/22 15:25
+	 * @access:     public
+	 *+-----------------------------------------------
+	 * @history:    更改记录
+	 */
+    public function uploadpic(){
         $Img = I('Img');
         $Path = null;
         if ($_FILES['img']) {
@@ -33,13 +114,13 @@ class UploadController extends ComController
         $Width = I('Width');
         $Height = I('Height');
         if (!$BackCall) {
-            $Width = $_POST['BackCall'];
+	        $BackCall = $_POST['BackCall'];
         }
         if (!$Width) {
             $Width = $_POST['Width'];
         }
         if (!$Height) {
-            $Width = $_POST['Height'];
+	        $Height = $_POST['Height'];
         }
         $this->assign('Width', $Width);
         $this->assign('BackCall', $BackCall);

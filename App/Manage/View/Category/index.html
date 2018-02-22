@@ -26,7 +26,8 @@
                         <table class="table table-striped table-bordered">
                             <thead>
                             <tr>
-                                <th class="col-xs-7">分类名称</th>
+                                <th class="col-xs-3">分类名称</th>
+                                <th class="col-xs-5">分类等级</th>
                                 <th class="col-xs-1">排序</th>
                                 <th class="col-xs-2">操作</th>
                             </tr>
@@ -49,13 +50,14 @@
                                             echo '
                                         </td>
                                         ';
-                                        echo '
-                                        <td>';
+                                        echo '<td>';
+                                        echo isset($val['class']) && !empty($val['class']) ? $val['class'] : '';
+                                        echo '</td>';
+
+                                        echo '<td>';
                                             echo '<input name="o" class="inputorder" type="number" value="'.$val['o'].'"
                                                          val="'.$val['id'].'"/>';
-                                            echo '
-                                        </td>
-                                        ';
+                                        echo '</td>';
                                         echo '
                                         <td>';
                                             echo '<a class="blue" href="'.U('edit',array('id'=>$val['id'])).'"

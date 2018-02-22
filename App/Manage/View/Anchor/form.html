@@ -52,13 +52,31 @@
                                 <label class="col-sm-1 control-label no-padding-right">
                                     主播分类 </label>
                                 <div class="col-sm-9">
-                                    <div class="col-sm-10">
+                                    <div class="col-sm-9">
                                         <div class="widget-body">
                                             <div class="widget-main row">
                                                 <volist name="category" id="vv">
-                                                    <label class="col-xs-2" style="width:160px;">
+                                                    <label class="col-xs-4 col-sm-3">
                                                         <input name="serve_type[]" class="ace ace-checkbox-2 children" <?php if(in_array($vv['serve_type_id'],$anchor_category)){echo 'checked="checked"';};?> type="checkbox" value="{$vv['serve_type_id']}"/>
                                                         <span class="lbl"> {$vv['title']}</span>
+                                                        <select id="level" name="level">
+                                                            <?php
+                                                                if(isset($vv['class']) && !empty($vv['class'])){
+                                                                    $class_array = explode(',',$vv['class']);
+                                                                    foreach($class_array as $k_class => $v_class){
+                                                                        echo "<option value='".$k_class."'";
+                                                                        if(isset($anchor_type) && !empty($anchor_type)){
+                                                                            foreach($anchor_type as $k_at => $v_at){
+                                                                                if($v_at['serve_id'] == $vv['serve_type_id'] && $v_at['level'] == $k_class){
+                                                                                    echo "selected='selected'";
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        echo ">".$v_class."</option>";
+                                                                    }
+                                                                }
+                                                            ?>
+                                                        </select>
                                                     </label>
                                                 </volist>
                                             </div>
@@ -68,16 +86,6 @@
                             </div>
 
                             <div class="space-4"></div>
-
-                            <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right"> 设置等级 </label>
-                                <div class="col-sm-9">
-                                    <!--TODO: 后期开发自定义游戏等级，暂时设置成2级-->
-                                    <input type="password" readonly placeholder="后期开发自定义服务分类等级，暂设成2级" class="col-xs-10 col-sm-5" value="">
-                                </div>
-                            </div>
-                            <div class="space-4"></div>
-
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right"> 接单时间 </label>
                                 <div class="col-sm-9">
@@ -98,30 +106,120 @@
 
                             <div class="space-4"></div>
                             <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right"> 头像 </label>
+                                <label class="col-sm-1 control-label no-padding-right"> 视频展示 </label>
                                 <div class="col-sm-9">
-                                    <div class="col-xs-10 col-sm-5">{:UpImage("head",100,100,$member['head'])}</div>
+                                    <div class="col-xs-10 col-sm-5">
+                                        <input type="file" id="upload_picture">
+                                        <input id= "video_mp4" type="hidden" name="video" value="{$anchor.video}">
+                                        <video id="videoMp4" controls="controls" height="270" width="150" class="videoMp4Android" src="{$anchor.video}"></video>
+                                    </div>
                                     <span class="help-inline col-xs-12 col-sm-7">
-                                        <span class="middle">仅支持jpg、gif、png、bmp、jpeg，且小于1MB。</span>
+                                        <span class="middle">仅支持mp4，且小于5MB。</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <script type="text/javascript">
+
+                                //上传图片
+                                /* 初始化上传插件 */
+                                $("#upload_picture").uploadifive({
+
+                                    'auto'          : true,     //自动上传
+                                    'width'         : '120px',   //按钮宽度
+                                    'height'        : '30px',   //按钮高度
+                                    'uploadScript'  : "{:U('upload/uploadVideo',array('session_id'=>session_id()))}",  //上传方法
+                                    'fileObjName'   : 'download',
+                                    'buttonText'    : '上传视频',
+                                    'fileType'      : '*.mp4;',
+                                    'multi'         : false,
+                                    'fileSizeLimit' : '5MB',
+                                    'uploadLimit'   : 0,
+                                    'removeTimeout' : 1,
+                                    'queueSizeLimit'    : 1,
+                                    'removeCompleted'   : true,   //上传完成后自动隐藏列表
+                                    'onAddQueueItem' : function(file){
+                                        this.data('uploadifive').settings.formData = {'id':$(this).data('id')};    //传递动态参数方法
+                                    },
+                                    'onUploadComplete' : function(file, data){
+                                        var data = $.parseJSON(data);
+                                        if(data.status){
+                                            $('#videoMp4').attr('src',data.data);
+                                            $('#video_mp4').val(data.data);
+                                        } else {
+                                            alert(data.data);
+                                        }
+                                    },
+
+                                });
+                            </script>
+
+                            <div class="space-4"></div>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right"> 魅力值 </label>
+                                <div class="col-sm-9">
+                                    <input type="number" name="usercp" <if condition="anchor['uid'] eq 1">readonly</if> class="rcol-xs-10 col-sm-5" value="{$anchor.usercp}">
+                                    <span class="help-inline col-xs-12 col-sm-7">
+                                        <if condition="anchor['uid'] eq 1"><span class="middle">无法修改</span></if>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="space-4"></div>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" > 签名 </label>
+                                <div class="col-sm-9">
+                                    <textarea name="signature" id="signature" cols="30" rows="4" maxlength="50" class="col-xs-10 col-sm-5">{$anchor['signature']}</textarea>
+                                    <span class="help-inline col-xs-12 col-sm-7">
+                                        <span class="middle">主播签名最多50个字</span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="space-4"></div>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right"> 身高 </label>
+                                <div class="col-sm-5">
+                                    <input type="number" name="height" class="rcol-xs-12 col-sm-7" value="{$anchor.height}">
+                                    <span class="help-inline col-xs-6 col-sm-3">
+                                        <span class="middle">单位cm</span>
                                     </span>
                                 </div>
                             </div>
 
                             <div class="space-4"></div>
                             <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right"> 性别 </label>
+                                <label class="col-sm-1 control-label no-padding-right"> 职业 </label>
                                 <div class="col-sm-9">
                                     <select id="sex" name="sex">
-                                        <option value="0"
-                                        <if condition="$member['sex'] eq 0">selected="selected"</if>
-                                        >保密</option>
-                                        <option value="1"
-                                        <if condition="$member['sex'] eq 1">selected="selected"</if>
-                                        >男</option>
-                                        <option value="2"
-                                        <if condition="$member['sex'] eq 2">selected="selected"</if>
-                                        >女</option>
+                                        <foreach name="profession" item="pro_v" key="pro_k">
+                                            <option value="{$pro_k}" <if condition="$anchor['profession'] eq $pro_k">selected="selected"</if>>{$pro_v}</option>
+                                        </foreach>
                                     </select>
+                                </div>
+                            </div>
+
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right">
+                                    魅力部位 </label>
+                                <div class="col-sm-9">
+                                    <div class="col-sm-9">
+                                        <div class="widget-body">
+                                            <div class="widget-main row">
+                                                <foreach item="charm" key="ck" id="cv">
+                                                    <label class="col-xs-4 col-sm-3">
+                                                        <input name="charm[]" class="ace ace-checkbox-2 children"
+                                                        <?php if(in_array($vv['serve_type_id'],$anchor_category)){echo 'checked="checked"';};?>
+                                                        type="checkbox" value="{$ck}"/>
+                                                        <span class="lbl"> {$cv}</span>
+                                                    </label>
+                                                </foreach>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 

@@ -115,7 +115,7 @@ class GroupController extends ComController
     {
 
         //获取所有启用的规则
-        $rule = M('auth_rule')->field('id,pid,title')->where('static=1')->order('o asc')->select();
+        $rule = M('auth_rule')->field('id,pid,title')->where('status=1')->order('o asc')->select();
         $rule = $this->getMenu($rule);
         $this->assign('rule', $rule);
         $this->display('form');

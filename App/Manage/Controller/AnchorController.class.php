@@ -134,12 +134,21 @@ class AnchorController extends ComController{
 	        if($anchor_type){
 	            $anchor_type_array = array_column($anchor_type, 'serve_id');
 	        }
-	        
+	        $this->assign('anchor_type', $anchor_type);
 	        $this->assign('anchor_category', $anchor_type_array);
 	        
         } else {
             $this->error('参数错误！');
         }
+	    
+        $charm = C('ANCHOR_CHARM');
+	    if($charm){
+		    $anchor_type_array = array_column($charm, 'serve_id');
+	    }
+        $this->assign('charm', $charm);
+        //职业
+	    $profession = C('ANCHOR_PROFESSION');
+        $this->assign('profession', $profession);
 	    
         //接单时间
 	    $order_time = C('ANCHOR_BUSINESS_HOURS');
@@ -217,8 +226,7 @@ class AnchorController extends ComController{
         }
         $this->success('操作成功！');
     }
-
-
+	
     public function add()
     {
         $category = M('ServeType')->field('serve_type_id id,pid,title name')->order('sort asc')->select();

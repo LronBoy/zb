@@ -19,7 +19,7 @@ class CategoryController extends ComController
 {
 
     public function index(){
-        $category = M('ServeType')->field('serve_type_id id,pid,title name,sort o')->order('sort asc')->select();
+        $category = M('ServeType')->field('serve_type_id id,pid,title name,class,sort o')->order('sort asc')->select();
         $category = $this->getMenu($category);
         $this->assign('category', $category);
         $this->display();
@@ -27,7 +27,6 @@ class CategoryController extends ComController
 
     public function del()
     {
-
         $id = isset($_GET['id']) ? intval($_GET['id']) : false;
         if ($id) {
             $data['id'] = $id;
@@ -45,14 +44,13 @@ class CategoryController extends ComController
 
     }
 
-    public function edit()
-    {
+    public function edit(){
 
         $id = isset($_GET['id']) ? intval($_GET['id']) : false;
-        $currentcategory = M('ServeType')->field('serve_type_id id,title name,icon image,sort o,way type,t,u')->where('serve_type_id=' . $id)->find();
+        $currentcategory = M('ServeType')->field('serve_type_id id,title name,class,icon image,sort o,way type,t,u')->where('serve_type_id=' . $id)->find();
         $this->assign('currentcategory', $currentcategory);
 
-        $category = M('ServeType')->field('serve_type_id id,pid,title name')->where("serve_type_id <> {$id}")->order('sort asc')->select();
+        $category = M('ServeType')->field('serve_type_id id,pid,title name,class')->where("serve_type_id <> {$id}")->order('sort asc')->select();
         $tree = new Tree($category);
         $str = "<option value=\$id \$selected>\$spacer\$name</option>"; //生成的形式
         $category = $tree->get_tree(0, $str, $currentcategory['pid']);
@@ -89,6 +87,7 @@ class CategoryController extends ComController
 
         $id = I('post.id', false, 'intval');
         $data['title'] = I('post.name');
+        $data['class'] = I('post.class');
         $data['icon'] = I('post.image');
         $data['sort'] = I('post.o');
         $data['way'] = I('post.type');
@@ -96,6 +95,10 @@ class CategoryController extends ComController
         if ($data['title'] == '') {
             $this->error('分类名称不能为空！');
         }
+	    if ($data['class'] == '') {
+		    $this->error('分类等级不能为空！');
+	    }
+        
         if ($id) {
             $data['u'] = time();
             if (M('ServeType')->data($data)->where('serve_type_id=' . $id)->save()) {
