@@ -134,6 +134,7 @@ class AnchorController extends ComController{
 	        if($anchor_type){
 	            $anchor_type_array = array_column($anchor_type, 'serve_id');
 	        }
+	        $this->assign('anchor_id', $anchor_id);
 	        $this->assign('anchor_type', $anchor_type);
 	        $this->assign('anchor_category', $anchor_type_array);
 	        
@@ -142,9 +143,6 @@ class AnchorController extends ComController{
         }
 	    
         $charm = C('ANCHOR_CHARM');
-	    if($charm){
-		    $anchor_type_array = array_column($charm, 'serve_id');
-	    }
         $this->assign('charm', $charm);
         //职业
 	    $profession = C('ANCHOR_PROFESSION');
@@ -162,20 +160,19 @@ class AnchorController extends ComController{
         $this->display('form');
     }
 
-    public function update($ajax = ''){
-        if ($ajax == 'yes') {
-            $uid = I('get.uid', 0, 'intval');
-            $gid = I('get.gid', 0, 'intval');
-            M('auth_group_access')->data(array('group_id' => $gid))->where("uid='$uid'")->save();
-            die('1');
-        }
+    public function update(){
+	    
+        $anchor_id  = isset($_POST['anchor_id']) ? intval($_POST['anchor_id']) : false;
+        $username   = isset($_POST['username']) ? htmlspecialchars($_POST['username'], ENT_QUOTES) : '';
+        $o_s_time   = isset($_POST['order_time_start']) ? $_POST['order_time_start'] : '00:00';
+        $o_e_time   = isset($_POST['order_time_end']) ? $_POST['order_time_end'] : '23:30';
+        $data['order_time'] = $o_s_time.'-'.$o_e_time;
+	    $data['video']      = isset($_POST['video']) ? trim($_POST['video']) : '';
 
-
-        $uid        = isset($_POST['uid']) ? intval($_POST['uid']) : false;
-        $user       = isset($_POST['user']) ? htmlspecialchars($_POST['user'], ENT_QUOTES) : '';
+        
         $group_id   = isset($_POST['group_id']) ? intval($_POST['group_id']) : 0;
         $password   = isset($_POST['password']) ? trim($_POST['password']) : false;
-
+		
 
         $data['username']   = isset($_POST['username']) ? htmlspecialchars($_POST['username'], ENT_QUOTES) : '';
         if ($password) {

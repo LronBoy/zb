@@ -24,11 +24,11 @@
                     <div class="col-xs-12">
                         <!-- PAGE CONTENT BEGINS -->
                         <form class="form-horizontal" action="{:U('update')}" method="post">
+                            <input type="hidden" name="anchor_id" value="{$anchor_id}">
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right"> 用户名 </label>
                                 <div class="col-sm-9">
-                                    <input type="text" readonly class="rcol-xs-10 col-sm-5" value="{$anchor.user}">
-                                    <input type="hidden" name="uid" value="{$member['uid']}">
+                                    <input type="text" readonly class="rcol-xs-10 col-sm-5" name="" value="{$anchor.user}">
                                     <span class="help-inline col-xs-12 col-sm-7">
                                         <span class="middle">无法修改</span>
                                     </span>
@@ -59,7 +59,7 @@
                                                     <label class="col-xs-4 col-sm-3">
                                                         <input name="serve_type[]" class="ace ace-checkbox-2 children" <?php if(in_array($vv['serve_type_id'],$anchor_category)){echo 'checked="checked"';};?> type="checkbox" value="{$vv['serve_type_id']}"/>
                                                         <span class="lbl"> {$vv['title']}</span>
-                                                        <select id="level" name="level">
+                                                        <select id="level" name="level_{$vv['serve_type_id']}">
                                                             <?php
                                                                 if(isset($vv['class']) && !empty($vv['class'])){
                                                                     $class_array = explode(',',$vv['class']);
@@ -154,6 +154,56 @@
                             </script>
 
                             <div class="space-4"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right"> 音频展示 </label>
+                                <div class="col-sm-9">
+
+                                    <div class="col-xs-10 col-sm-5">
+                                        <input type="file" id="upload_audio">
+                                        <input id= "audio_mp3" type="hidden" name="audio" value="{$anchor.audio}">
+
+                                    </div>
+                                    <span class="help-inline col-xs-2 col-sm-3">
+                                        <span class="middle"><video id="audioMp3" controls="controls" height="35" class="videoMp3Android" src="{$anchor['audio']}"></video></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <script type="text/javascript">
+
+                                //上传图片
+                                /* 初始化上传插件 */
+                                $("#upload_audio").uploadifive({
+
+                                    'auto'          : true,     //自动上传
+                                    'width'         : '120px',   //按钮宽度
+                                    'height'        : '35px',   //按钮高度
+                                    'uploadScript'  : "{:U('upload/uploadAudio',array('session_id'=>session_id()))}",  //上传方法
+                                    'fileObjName'   : 'download',
+                                    'buttonText'    : '上传音频',
+                                    'fileType'      : '*.mp3;',
+                                    'multi'         : false,
+                                    'fileSizeLimit' : '1MB',
+                                    'uploadLimit'   : 0,
+                                    'removeTimeout' : 1,
+                                    'queueSizeLimit'    : 1,
+                                    'removeCompleted'   : true,   //上传完成后自动隐藏列表
+                                    'onAddQueueItem' : function(file){
+                                        this.data('uploadifive').settings.formData = {'id':$(this).data('id')};    //传递动态参数方法
+                                    },
+                                    'onUploadComplete' : function(file, data){
+                                        var data = $.parseJSON(data);
+                                        if(data.status){
+                                            $('#audioMp3').attr('src',data.data);
+                                            $('#audio_mp3').val(data.data);
+                                        } else {
+                                            alert(data.data);
+                                        }
+                                    },
+
+                                });
+                            </script>
+
+                            <div class="space-4"></div>
 
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right"> 魅力值 </label>
@@ -209,10 +259,10 @@
                                     <div class="col-sm-9">
                                         <div class="widget-body">
                                             <div class="widget-main row">
-                                                <foreach item="charm" key="ck" id="cv">
+                                                <foreach name="charm" item="cv" key="ck">
                                                     <label class="col-xs-4 col-sm-3">
                                                         <input name="charm[]" class="ace ace-checkbox-2 children"
-                                                        <?php if(in_array($vv['serve_type_id'],$anchor_category)){echo 'checked="checked"';};?>
+                                                        <?php if(in_array($ck,explode(',',$anchor['charm']))){echo 'checked="checked"';};?>
                                                         type="checkbox" value="{$ck}"/>
                                                         <span class="lbl"> {$cv}</span>
                                                     </label>
@@ -222,35 +272,27 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="space-4"></div>
 
                             <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">生日</label>
-                                <div class="col-xs-9 col-sm-9">
-                                    <div class="input-group col-xs-5">
-
-                                        <input class="form-control" id="birthday" name="birthday" value="<if condition="
-                                               $member['birthday'] neq '' ">{$member['birthday']|date="Y-m-d",###}</if>"
-                                        type="text" data-date-format="dd-mm-yyyy" />
-                                        <span class="input-group-addon">
-													<i class="ace-icon fa fa-calendar bigger-110"></i>
-												</span>
-
-                                    </div>
+                                <label class="col-sm-1 control-label no-padding-right"> 个性标签 </label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="character" id="character" placeholder="例如：颜值担当,激情四射" class="col-xs-10 col-sm-5"
+                                           value="{$anchor['character']}">
+                                    <span class="help-inline col-xs-12 col-sm-7">
+												<span class="middle">多个个性标签以英文逗号分隔</span>
+											</span>
                                 </div>
                             </div>
-
-
                             <div class="space-4"></div>
 
                             <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right"> 手机 </label>
+                                <label class="col-sm-1 control-label no-padding-right"> 兴趣爱好 </label>
                                 <div class="col-sm-9">
-                                    <input type="text" name="phone" id="phone" placeholder="手机"
-                                           class="col-xs-10 col-sm-5" value="{$member['phone']}">
+                                    <input type="text" name="hobbies" id="hobbies" placeholder="例如：打电玩,做饭" class="col-xs-10 col-sm-5"
+                                           value="{$anchor['hobbies']}">
                                     <span class="help-inline col-xs-12 col-sm-7">
-												<span class="middle"></span>
+												<span class="middle">多个兴趣爱好以英文逗号分隔</span>
 											</span>
                                 </div>
                             </div>
@@ -258,94 +300,42 @@
                             <div class="space-4"></div>
 
                             <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right"> Q&nbsp;&nbsp;Q </label>
-                                <div class="col-sm-9">
-                                    <input type="text" name="qq" id="qq" placeholder="QQ" class="col-xs-10 col-sm-5"
-                                           value="{$member['qq']}">
-                                    <span class="help-inline col-xs-12 col-sm-7">
+                                <label class="col-sm-1 control-label no-padding-right"> 排序 </label>
+                                <div class="col-sm-5">
+                                    <input type="number" name="sort" class="rcol-xs-12 col-sm-7" value="{$anchor.sort}">
+                                    <span class="help-inline col-xs-6 col-sm-3">
+                                        <span class="middle">名</span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right"> 是否推荐 </label>
+                                <div class="control-label no-padding-left col-sm-1">
+                                    <label>
+                                        <input name="recommend" id="recommend"
+                                        <if condition="$anchor['recommend'] eq 1">checked="checked"</if>
+                                        value="1" class="ace ace-switch ace-switch-2" type="checkbox" />
+                                        <span class="lbl"></span>
+                                    </label>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-7">
 												<span class="middle"></span>
-											</span>
-                                </div>
+										</span>
                             </div>
-
-                            <div class="space-4"></div>
-
-                            <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right">
-                                    E-mail </label>
-                                <div class="col-sm-9">
-                                    <input type="email" name="email" id="email" placeholder="E-mail"
-                                           class="col-xs-10 col-sm-5" value="{$member['email']}">
-                                    <span class="help-inline col-xs-12 col-sm-7">
-												<span class="middle"></span>
-											</span>
-                                </div>
-                            </div>
-                            <div class="space-4"></div>
-                            <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right"> 实名认证 </label>
-                                <div class="col-sm-9">
-                                    <select id="attestation" name="attestation">
-                                        <option value="0"
-                                        <if condition="$member['attestation'] eq 0">selected="selected"</if>
-                                        >未认证</option>
-                                        <option value="1"
-                                        <if condition="$member['attestation'] eq 1">selected="selected"</if>
-                                        >已认证</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="space-4"></div>
-
-                            <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right"> 地址 </label>
-                                <div class="col-sm-9" id="cityJs">
-                                    <select  name="prov" class="rcol-xs-10 col-sm-5 prov"></select>
-                                    <select  name="city" class="rcol-xs-10 col-sm-5 city" disabled="disabled"></select>
-                                </div>
-                            </div>
-
-                            <div class="space-4"></div>
-
-                            <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right"> 贡献值 </label>
-                                <div class="col-sm-9">
-                                    <input type="text" name="contribution" id="contribution" placeholder="贡献值"
-                                           class="col-xs-10 col-sm-5" value="{$member['contribution']}">
-                                    <span class="help-inline col-xs-12 col-sm-7">
-												<span class="middle"></span>
-											</span>
-                                </div>
-                            </div>
-
-                            <div class="space-4"></div>
-                            <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right"> 状态 </label>
-                                <div class="col-sm-9">
-                                    <select id="status" name="status">
-                                        <option value="1"
-                                        <if condition="$member['status'] eq 1">selected="selected"</if>
-                                        >正常</option>
-                                        <option value="0"
-                                        <if condition="$member['status'] eq 0">selected="selected"</if>
-                                        >禁用</option>
-                                    </select>
-                                </div>
-                            </div>
-
 
                             <div class="space-4"></div>
 
                             <div class="col-md-offset-2 col-md-9">
-                                <!--<button class="btn btn-info" type="submit">
+                                <button class="btn btn-info" type="submit">
                                     <i class="icon-ok bigger-110"></i>
                                     提交
-                                </button>-->
-                                <a href="javascript:void(0);" onclick="return false" class="btn btn-info" type="submit">
+                                </button>
+                                <!--<a href="javascript:void(0);" onclick="return false" class="btn btn-info" type="submit">
                                     <i class="icon-ok bigger-110"></i>
                                     提交
-                                </a>
+                                </a>-->
                                 &nbsp; &nbsp; &nbsp;
                                 <button class="btn" type="reset">
                                     <i class="icon-undo bigger-110"></i>
@@ -365,30 +355,5 @@
 
 <include file="Public/footerjs"/>
 <!-- inline scripts related to this page -->
-<script src="__PUBLIC__/manage/js/date-time/bootstrap-datepicker.js"></script>
-<script src="__PUBLIC__/static/js/cityJs/jquery.cityselect.js"></script>
-<script type="text/javascript">
-    var prov = '北京';
-    var city = "东城区";
-
-    <if condition="$member['prov'] neq ''">prov = "{$meber['prov']}"</if>
-    <if condition="$member['city'] neq ''">city = "{$meber['city']}"</if>
-
-        jQuery(function ($) {
-        $("#cityJs").citySelect({
-            url:"__PUBLIC__/static/js/cityJs/city.min.js",
-            prov:prov,
-            city:city
-        });
-
-        $('#birthday').datepicker({
-            format: 'yyyy-mm-dd',
-            weekStart: 1,
-            autoclose: true,
-            todayBtn: 'linked',
-            language: 'cn'
-        });
-    });
-</script>
 </body>
 </html>
