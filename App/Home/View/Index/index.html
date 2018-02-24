@@ -162,7 +162,7 @@
                                             <div class="listitem_content">
                                                 <h3>{$ac_list['title']}<span style="">+MORE</span></h3>
                                                 <volist name="ac_list['anchor_list']" id="a_list">
-                                                    <a href="{:U('anchor/index')}">
+                                                    <a href="{:U('anchor/index', array('anchor_id'=>$a_list['anchor_id']))}">
                                                         <div class="listitem_item">
                                                             <div class="singleitem_content">
                                                                 <div class="singleitem_img">

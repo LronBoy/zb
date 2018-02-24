@@ -159,7 +159,15 @@ class AnchorController extends ComController{
         
         $this->display('form');
     }
-
+	
+	/**
+	 * description: 修改主播信息
+	 *+-----------------------------------------------
+	 * @author:     Pante  2018/2/24 15:22
+	 * @access:     public
+	 *+-----------------------------------------------
+	 * @history:    更改记录
+	 */
     public function update(){
         $anchor_id  = isset($_POST['anchor_id']) ? intval($_POST['anchor_id']) : 0;
 	    if($anchor_id < 1) $this->error('该用户不存在！');
@@ -207,6 +215,7 @@ class AnchorController extends ComController{
         $this->success('操作成功！');
     }
 	
+    
     public function add(){
         $category = M('ServeType')->field('serve_type_id id,pid,title name')->order('sort asc')->select();
         $this->assign('category', $category);//导航

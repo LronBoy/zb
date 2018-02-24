@@ -18,19 +18,22 @@
                             <!--背景----end---->
                             <div class="header_box">
                                 <!--头像----start-->
-                                <div class="fl header_demo_box"><div class="header_demo"><img src="__PUBLIC__/demo/26_avatar_big.jpg"></div></div>
+                                <div class="fl header_demo_box"><div class="header_demo"><img src="__ROOT__{$anchor_info['head']}"></div></div>
                                 <!--头像----end---->
                                 <div class="fl play_box">
-                                    <div class="play_name">可儿丶</div>
-                                    <div class="play_time">接单时间 00:00-24:00</div>
+                                    <div class="play_name">{$anchor_info['username']}</div>
+                                    <div class="play_time">接单时间 {$anchor_info['order_time']}</div>
                                     <!--真人认证，关注---start-->
                                     <div class="play_img">
-                                        <img src="__PUBLIC__/demo/authentication.png" class="authentication">
+                                        <img src="__PUBLIC__/demo/authentication.png" class="authentication" <if  condition="$anchor_info['attestation'] eq 0"> style="display: none;" </if>>
                                         <img src="__PUBLIC__/demo/love.png" class="love" style="display: none;">
                                     </div>
                                     <!--真人认证，关注---end---->
                                 </div>
                                 <!--视频播放---start-->
+                                <if condition="$anchor_info['attestation'] eq 0"></if>
+
+
                                 <div class="fl play"><img src="__PUBLIC__/demo/clickActive.png" class="clickActive"></div>
                                 <!--视频播放---end---->
                                 <div class="clearfix"></div>

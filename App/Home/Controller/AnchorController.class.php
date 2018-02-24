@@ -24,6 +24,19 @@ class AnchorController extends AppController{
 	 * @history:    更改记录
 	 */
 	public function index(){
+		if(I('anchor_id') < 1 ) $this->error('该主播不存在！');
+		$anchor_id = intval(I('anchor_id'));
+		$prefix = C('DB_PREFIX');
+		$anchor_model   = M('anchor');
+		$anchor_info    = $anchor_model -> field("{$prefix}anchor.*,{$prefix}member.*")
+			->join("{$prefix}member ON {$prefix}member.uid = {$prefix}anchor.uid")
+			->where("{$prefix}anchor.anchor_id=$anchor_id and {$prefix}member.status=1")
+			->find();
+		
+		if(!$anchor_info) $this->error('该主播不存在！');
+		$anchor_info['last_time'] = format_date($anchor_info['lt']);
+
+		$this->assign('anchor_info', $anchor_info);
 		$this->assign('meta_title', $this->web_name.'主播');
 		$this->display();
 	}
