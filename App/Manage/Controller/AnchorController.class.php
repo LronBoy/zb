@@ -161,71 +161,53 @@ class AnchorController extends ComController{
     }
 
     public function update(){
-	    
-        $anchor_id  = isset($_POST['anchor_id']) ? intval($_POST['anchor_id']) : false;
+        $anchor_id  = isset($_POST['anchor_id']) ? intval($_POST['anchor_id']) : 0;
+	    if($anchor_id < 1) $this->error('该用户不存在！');
+	    if(empty($_POST['serve_type'])) $this->error('请选择主播分类');
+        //更新用户名
         $username   = isset($_POST['username']) ? htmlspecialchars($_POST['username'], ENT_QUOTES) : '';
+        $anchor_info = M('anchor') -> where("anchor_id=$anchor_id") -> find();
+	    M('member')->data(array('username' => $username))->where("uid={$anchor_info['uid']}")->save();
+	    addlog('更新用户ID：' . $anchor_info['uid'] .';username：'. $username);
+	    
+        //更新anchor主播信息表
         $o_s_time   = isset($_POST['order_time_start']) ? $_POST['order_time_start'] : '00:00';
         $o_e_time   = isset($_POST['order_time_end']) ? $_POST['order_time_end'] : '23:30';
         $data['order_time'] = $o_s_time.'-'.$o_e_time;
 	    $data['video']      = isset($_POST['video']) ? trim($_POST['video']) : '';
-
-        
-        $group_id   = isset($_POST['group_id']) ? intval($_POST['group_id']) : 0;
-        $password   = isset($_POST['password']) ? trim($_POST['password']) : false;
-		
-
-        $data['username']   = isset($_POST['username']) ? htmlspecialchars($_POST['username'], ENT_QUOTES) : '';
-        if ($password) {
-            $data['password']   = password($password);
-        }
-        $data['class']      = isset($_POST['class']) ? intval($_POST['class']) : 0;
-        $head = I('post.head', '', 'strip_tags');
-        $data['head']       = $head ? $head : '';
-        $data['sex']        = isset($_POST['sex']) ? intval($_POST['sex']) : 0;
-        $data['birthday']   = isset($_POST['birthday']) ? strtotime($_POST['birthday']) : 0;
-        $data['phone']      = isset($_POST['phone']) ? trim($_POST['phone']) : '';
-        $data['qq']         = isset($_POST['qq']) ? trim($_POST['qq']) : '';
-        $data['email']      = isset($_POST['email']) ? trim($_POST['email']) : '';
-        $data['attestation']= isset($_POST['attestation']) ? intval($_POST['attestation']) : 0;
-        $data['prov']       = isset($_POST['prov']) ? trim($_POST['prov']) : '';
-        $data['city']       = isset($_POST['city']) ? trim($_POST['city']) : '';
-        $data['contribution']= isset($_POST['contribution']) ? intval($_POST['contribution']) : 0;
-        $data['is_anchor']  = isset($_POST['is_anchor']) ? intval($_POST['is_anchor']) : 0;
-        $data['static']     = isset($_POST['static']) ? intval($_POST['static']) : 0;
-        $data['lt']         = time();
-
-        //新建
-        if (!$uid) {
-            if ($user == '') {
-                $this->error('用户名称不能为空！');
-            }
-            if (!$password) {
-                $this->error('用户密码不能为空！');
-            }
-            if (M('member')->where("user='$user'")->count()) {
-                $this->error('用户名已被占用！');
-            }
-            if ($data['username'] == ''){
-                $data['username'] = $user;
-            }
-            $data['user'] = $user;
-            $data['t'] = time();
-            //用户表
-            $uid = M('member')->data($data)->add();
-
-            M('auth_group_access')->data(array('group_id' => $group_id, 'uid' => $uid))->add();
-            addlog('新增会员，会员UID：' . $uid);
-        } else {
-            M('auth_group_access')->data(array('group_id' => $group_id))->where("uid=$uid")->save();
-            addlog('编辑会员信息，会员UID：' . $uid);
-            M('member')->data($data)->where("uid=$uid")->save();
-
-        }
+	    $data['audio']      = isset($_POST['audio']) ? trim($_POST['audio']) : '';
+	    $data['usercp']     = isset($_POST['usercp']) ? intval($_POST['usercp']) : 0;
+	    $data['signature']  = isset($_POST['signature']) ? trim($_POST['signature']) : '';
+	    $data['height']     = isset($_POST['height']) ? intval($_POST['height']) : 0;
+	    $data['profession'] = isset($_POST['profession']) ? intval($_POST['profession']) : 0;
+	    $data['charm']      = isset($_POST['charm']) && !empty($_POST['charm']) ? implode(',',$_POST['charm']) : '';
+	    $data['character']  = isset($_POST['character']) ? trim($_POST['character']) : '';
+	    $data['hobbies']    = isset($_POST['hobbies']) ? trim($_POST['hobbies']) : '';
+	    $data['recommend']  = isset($_POST['recommend']) ? intval($_POST['recommend']) : 0;
+	    $data['sort']       = isset($_POST['sort']) ? intval($_POST['sort']) : 0;
+	    $data['u']          = time();
+	    M('anchor') -> data($data) -> where("anchor_id=$anchor_id") -> save();
+	    addlog('修改主播信息ID：' . $anchor_id);
+	    
+	    //更新主播分类表anchor_type
+	    $serve_type_array   = $_POST['serve_type'];
+	    $anchor_type_model  = M('anchorType');
+	    $anchor_type_model -> where("anchor_id=$anchor_id") -> delete();
+	    foreach ($serve_type_array as $key => $val){
+            //新增
+		    $anchor_type_data = array(
+		        'anchor_id' =>  $anchor_id,
+			    'serve_id'  =>  $val,
+			    'level'     =>  $_POST["level_$val"]
+		    );
+		    $anchor_type_model -> data($anchor_type_data) -> add();
+		    addlog('更新主播分类等级：主播ID' . $anchor_id . ";分类ID：$val;" );
+	    }
+	    
         $this->success('操作成功！');
     }
 	
-    public function add()
-    {
+    public function add(){
         $category = M('ServeType')->field('serve_type_id id,pid,title name')->order('sort asc')->select();
         $this->assign('category', $category);//导航
 
