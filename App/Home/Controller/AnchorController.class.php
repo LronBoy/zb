@@ -36,6 +36,24 @@ class AnchorController extends AppController{
 		if(!$anchor_info) $this->error('该主播不存在！');
 		$anchor_info['last_time'] = format_date($anchor_info['lt']);
 
+		$profession_array = C('ANCHOR_PROFESSION');
+        $anchor_info['profession_str'] = $profession_array[$anchor_info['profession']];
+
+        $charm_str = '无';
+        if(isset($anchor_info['charm']) && !empty($anchor_info['charm'])){
+            $charm_config = C('ANCHOR_CHARM');
+            $charm_array = explode(',',$anchor_info['charm']);
+            if($charm_array != 0){
+                $charm_str = '';
+                foreach ($charm_array as $val){
+                    $charm_str = $charm_str.$charm_config[$val].' ';
+                }
+            }
+
+        }
+
+        $anchor_info['charm_str'] = $charm_str;
+
 		$this->assign('anchor_info', $anchor_info);
 		$this->assign('meta_title', $this->web_name.'主播');
 		$this->display();

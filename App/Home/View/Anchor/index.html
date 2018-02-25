@@ -31,19 +31,25 @@
                                     <!--真人认证，关注---end---->
                                 </div>
                                 <!--视频播放---start-->
-                                <if condition="$anchor_info['attestation'] eq 0"></if>
-
-
-                                <div class="fl play"><img src="__PUBLIC__/demo/clickActive.png" class="clickActive"></div>
+                                <if condition="$anchor_info['video'] neq ''">
+                                <div class="fl play" id="play_video"><img src="__PUBLIC__/demo/clickActive.png" class="clickActive"></div>
+                                </if>
                                 <!--视频播放---end---->
                                 <div class="clearfix"></div>
                             </div>
                             <!--基础信息----start-->
                             <div class="banner_bottom">
-                                <div class="fl charm">魅力值<span class="spanMeili">2564</span></div>
-                                <div class="fr charm_sex"><img src="__PUBLIC__/demo/sex_woman.png">21<span>| </span>北京<span> |</span> 2小时</div>
+                                <div class="fl charm">魅力值<span class="spanMeili">{$anchor_info['usercp']}</span></div>
+                                <div class="fr charm_sex"><img src="__PUBLIC__/demo/<?php
+                                    if($anchor_info['sex'] == 2){
+                                        echo 'sex_woman.png';
+                                    }else{
+                                        echo 'sex_man.png';
+                                    }
+
+                                ?>">{$anchor_info['age']}<span>| </span>{$anchor_info['city']}<span> |</span> {$anchor_info['last_time']}</div>
                                 <div class="clearfix"></div>
-                                <div class="underwrite">0.0你还差个可儿宝宝呀</div>
+                                <div class="underwrite">{$anchor_info['signature']}</div>
                             </div>
                             <!--基础信息-----end--->
                         </div>
@@ -53,10 +59,10 @@
                     <!--服务动态------start-->
                     <div class="content_box">
                         <div>
-                            <div class="padding"><span class="active">服务</span><span class="">动态</span></div>
+                            <div class="padding"><span class="serve_tab active">服务</span><span class="dynamic_tab">动态</span></div>
                             <div class="item thin-border">
 
-                                <div style="">
+                                <div id="serve_tab" style="">
                                     <div class="content_typebox">
                                         <div class="swiper-container swiper-container-horizontal swiper-container-free-mode" style="">
                                             <div class="swiper-wrapper" style="transition-duration: 0ms;">
@@ -155,7 +161,7 @@
                                 </div>
                                 <!--服务---end---->
                                 <!--动态---start-->
-                                <div style="display: none;">
+                                <div id="dynamic_tab" style="display: none;">
                                     <!--动态列表---start--->
                                     <div class="courses_scontent">
                                         <div class="cont_img_box"><img src="__PUBLIC__/demo/237826-31095942.jpeg" class="cont_img"></div>
@@ -167,16 +173,16 @@
                                     <div>
                                         <div class="discuss">资料</div>
                                         <ul class="datum">
-                                            <li>身高：<span>162CM</span></li>
-                                            <li>星座：<span>天蝎座</span></li>
-                                            <li>职业：<span>学生</span></li>
-                                            <li>魅力部位：<span>眼睛、胸部</span></li>
+                                            <li>身高：<span>{$anchor_info['height']}CM</span></li>
+                                            <li>星座：<span>{$anchor_info['constellation']}</span></li>
+                                            <li>职业：<span>{$anchor_info['profession_str']}</span></li>
+                                            <li>魅力部位：<span>{$anchor_info['charm_str']}</span></li>
                                             <li>
                                                 个性标签：
-                                                <span>颜值担当、乖巧黏人</span></li>
+                                                <span>{$anchor_info['character']}</span></li>
                                             <li>
                                                 兴趣爱好：
-                                                <span></span></li>
+                                                <span>{$anchor_info['hobbies']}</span></li>
                                         </ul>
                                     </div>
                                     <!--主播资料---end--->
@@ -234,10 +240,31 @@
             <!--页面加载中---end-->
             <!--视频播放弹窗--start-->
             <div class="divVideoMp4Android" style="display: none;">
-                <video id="videoMp4Android" class="videoMp4Android" src="__PUBLIC__/demo/9811591495102218.mp4"></video>
-                <div>关闭</div>
+                <video id="videoMp4Android" autoplay class="videoMp4Android" src="__ROOT__{$anchor_info['video']}"></video>
+                <div id="stop_video">关闭</div>
             </div>
             <!--视频播放弹窗--end--->
         </div>
     </div>
+</block>
+<block name="js">
+    <script>
+        $("#play_video").click(function () {
+            $(".divVideoMp4Android").attr('style','display:block');
+        });
+        $("#stop_video").click(function () {
+            $(".divVideoMp4Android").attr('style','display:none');
+        });
+        $(".padding").find("span").click(function () {
+            $(this).addClass('active').siblings().removeClass('active');
+            if($(this).hasClass('serve_tab')){
+                $("#serve_tab").attr('style','display:block');
+                $("#dynamic_tab").attr('style','display:none');
+            }else{
+                $("#serve_tab").attr('style','display:none');
+                $("#dynamic_tab").attr('style','display:block');
+            }
+        });
+        
+    </script>
 </block>

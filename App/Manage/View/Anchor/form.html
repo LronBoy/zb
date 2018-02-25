@@ -40,9 +40,9 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right"> 昵称 </label>
                                 <div class="col-sm-9">
-                                    <input type="text" name="username" <if condition="anchor['uid'] eq 1">readonly</if> class="rcol-xs-10 col-sm-5" value="{$anchor.username}">
+                                    <input type="text" name="username" <if condition="$anchor['uid'] eq 1">readonly</if> class="rcol-xs-10 col-sm-5" value="{$anchor.username}">
                                     <span class="help-inline col-xs-12 col-sm-7">
-                                        <if condition="anchor['uid'] eq 1"><span class="middle">无法修改</span></if>
+                                        <if condition="$anchor['uid'] eq 1"><span class="middle">无法修改</span></if>
                                     </span>
                                 </div>
                             </div>
@@ -208,9 +208,9 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right"> 魅力值 </label>
                                 <div class="col-sm-9">
-                                    <input type="number" name="usercp" <if condition="anchor['uid'] eq 1">readonly</if> class="rcol-xs-10 col-sm-5" value="{$anchor.usercp}">
+                                    <input type="number" name="usercp" <if condition="$anchor['uid'] eq 1">readonly</if> class="rcol-xs-10 col-sm-5" value="{$anchor.usercp}">
                                     <span class="help-inline col-xs-12 col-sm-7">
-                                        <if condition="anchor['uid'] eq 1"><span class="middle">无法修改</span></if>
+                                        <if condition="$anchor['uid'] eq 1"><span class="middle">无法修改</span></if>
                                     </span>
                                 </div>
                             </div>
