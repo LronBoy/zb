@@ -83,11 +83,66 @@ class AnchorController extends ComController{
         $this->assign('page', $page);
         $this->display();
     }
-
+    
+    public function serve(){
+	    $p = isset($_GET['p']) ? intval($_GET['p']) : '1';
+	    $field = isset($_GET['field']) ? $_GET['field'] : '';
+	    $keyword = isset($_GET['keyword']) ? htmlentities($_GET['keyword']) : '';
+	    $order = isset($_GET['order']) ? $_GET['order'] : 'DESC';
+	    $where = '';
+	
+	    $prefix = C('DB_PREFIX');
+	
+	    if ($order == 'asc') {
+		    $order = "{$prefix}anchor.t desc";
+	    } elseif (($order == 'desc')) {
+		    $order = "{$prefix}anchor.t asc";
+	    } else {
+		    $order = "{$prefix}anchor.uid desc";
+	    }
+	    if ($keyword <> '') {
+		    $where = "{$prefix}member.user LIKE '%$keyword%'";
+	    }
+	    $anchor = M('anchor');
+	    $pagesize = 10;//每页数量
+	    $offset = $pagesize * ($p - 1);//计算记录偏移量
+	    $count = $anchor->field("{$prefix}anchor.*,{$prefix}member.uid,{$prefix}member.user,{$prefix}member.username,{$prefix}member.sex,{$prefix}member.phone,{$prefix}auth_group.id as gid,{$prefix}auth_group.title")
+		    ->order($order)
+		    ->join("{$prefix}member ON {$prefix}anchor.uid = {$prefix}member.uid")
+		    ->join("{$prefix}auth_group_access ON {$prefix}member.uid = {$prefix}auth_group_access.uid")
+		    ->join("{$prefix}auth_group ON {$prefix}auth_group.id = {$prefix}auth_group_access.group_id")
+		    ->where($where)
+		    ->count();
+	    $list = $anchor->field("{$prefix}anchor.*,{$prefix}member.*,{$prefix}auth_group.id as gid,{$prefix}auth_group.title")
+		    ->order($order)
+		    ->join("{$prefix}member ON {$prefix}anchor.uid = {$prefix}member.uid")
+		    ->join("{$prefix}auth_group_access ON {$prefix}member.uid = {$prefix}auth_group_access.uid")
+		    ->join("{$prefix}auth_group ON {$prefix}auth_group.id = {$prefix}auth_group_access.group_id")
+		    ->where($where)
+		    ->limit($offset . ',' . $pagesize)
+		    ->select();
+	
+	    //$user->getLastSql();
+	    $page = new \Think\Page($count, $pagesize);
+	    $page = $page->show();
+	
+	    $this->assign('list', $list);
+	    $this->assign('page', $page);
+	    $this->display();
+    }
+	
+	/**
+	 * description: 主播删除
+	 *+-----------------------------------------------
+	 * @author:     Pante  2018/2/26 15:57
+	 * @access:     public
+	 *+-----------------------------------------------
+	 * @history:    更改记录
+	 */
     public function del(){
-        $uids = isset($_REQUEST['uids']) ? $_REQUEST['uids'] : false;
+        $uids = isset($_REQUEST['anchor_id']) ? $_REQUEST['anchor_id'] : false;
         //uid为1的禁止删除
-        if ($uids == 1 or !$uids) {
+        if (!$uids) {
             $this->error('参数错误！');
         }
         if (is_array($uids)) {
@@ -103,16 +158,39 @@ class AnchorController extends ComController{
             }
         }
 
-        $map['uid'] = array('in', $uids);
-        if (M('member')->where($map)->delete()) {
-            M('auth_group_access')->where($map)->delete();
-            addlog('删除会员UID：' . $uids);
-            $this->success('恭喜，用户删除成功！');
+        $map['anchor_id'] = array('in', $uids);
+        
+		//更改用户主播状态member表更新状态
+		$member_step_data = array(
+			'step'  =>  0,
+			'st'    =>  0
+		);
+		$anchor_info_array = M('anchor')->where($map)->select();
+		$uid_array = array();
+		if($anchor_info_array){
+			$uid_array = array_column($anchor_info_array,'uid');
+		}
+		$uid_str = implode(',', $uid_array);
+		$member_map['uid'] = array('in', $uid_str);
+		M('member') -> data($member_step_data) ->  where($member_map) -> save();
+	
+        if (M('anchor')->where($map)->delete()) {
+            M('anchor_type')->where($map)->delete();
+            addlog('删除主播anchor_id：' . $uids);
+            $this->success('恭喜，用户主播成功！');
         } else {
             $this->error('参数错误！');
         }
     }
-
+	
+	/**
+	 * description: 主播编辑页面
+	 *+-----------------------------------------------
+	 * @author:     Pante  2018/2/26 15:57
+	 * @access:     public
+	 *+-----------------------------------------------
+	 * @history:    更改记录
+	 */
     public function edit(){
         $anchor_id = isset($_GET['anchor_id']) ? intval($_GET['anchor_id']) : false;
         if ($anchor_id) {
@@ -200,22 +278,50 @@ class AnchorController extends ComController{
 	    //更新主播分类表anchor_type
 	    $serve_type_array   = $_POST['serve_type'];
 	    $anchor_type_model  = M('anchorType');
-	    $anchor_type_model -> where("anchor_id=$anchor_id") -> delete();
-	    foreach ($serve_type_array as $key => $val){
-            //新增
-		    $anchor_type_data = array(
-		        'anchor_id' =>  $anchor_id,
-			    'serve_id'  =>  $val,
-			    'level'     =>  $_POST["level_$val"]
-		    );
-		    $anchor_type_model -> data($anchor_type_data) -> add();
-		    addlog('更新主播分类等级：主播ID' . $anchor_id . ";分类ID：$val;" );
+	    $anchor_type_old    = $anchor_type_model -> where("anchor_id=$anchor_id") -> select();
+	    $anchor_serve_array   = array();
+	    if(isset($anchor_type_old) && !empty($anchor_type_old)){
+		    $anchor_serve_array   = array_column($anchor_type_old,'serve_id');
 	    }
 	    
+	    //删除表中多余分类
+	    if(!empty($anchor_serve_array)){
+	    	foreach ($anchor_serve_array as $ks => $vs){
+	    		if(!in_array($vs,$serve_type_array)){
+	    			//删除
+				    $anchor_type_model -> where("anchor_id=$anchor_id and serve_id=$vs") -> delete();
+			    }
+		    }
+	    }
+	    
+	    //更新分类
+	    foreach ($serve_type_array as $key => $val){
+	    	if(in_array($val,$anchor_serve_array)){
+	    	    //修改
+	    	    $anchor_type_model -> data(array('level' => $_POST["level_$val"])) ->  where("anchor_id=$anchor_id and serve_id=$val") ->save();
+			    
+		    }else{
+	    		//新增
+			    $anchor_type_data = array(
+				    'anchor_id' =>  $anchor_id,
+				    'serve_id'  =>  $val,
+				    'level'     =>  $_POST["level_$val"]
+			    );
+			    $anchor_type_model -> data($anchor_type_data) -> add();
+		    }
+	    }
+	    addlog('更新主播分类等级：主播ID' . $anchor_id);
         $this->success('操作成功！');
     }
 	
-    
+	/**
+	 * description: 新增
+	 *+-----------------------------------------------
+	 * @author:     Pante  2018/2/26 15:37
+	 * @access:     public
+	 *+-----------------------------------------------
+	 * @history:    更改记录
+	 */
     public function add(){
         $category = M('ServeType')->field('serve_type_id id,pid,title name')->order('sort asc')->select();
         $this->assign('category', $category);//导航
