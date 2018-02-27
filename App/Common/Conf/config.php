@@ -60,6 +60,10 @@ return array(
 		7 => '腰部',
 		8 => '胸部',
 	),
+	'WE_CHAT' => array(
+		'appid'     => 'wxbdcffa83b00c4563',
+		'appsecret' => 'dea68a7958f369c257bd4f1b4b7fd793'
+	),
 	'OCCUPATIONAL_CLASS' => array(
 		'00' =>  array(
 			'one_name'  => '销售|客服|市场',

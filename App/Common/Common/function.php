@@ -725,15 +725,20 @@ function setting($k = 'all'){
     //判断是否查询全部设置项
     if ($k == 'all') {
         $setting = $setting->field('k,v')->select();
+        $config = array();
         foreach ($setting as $v) {
             $config[$v['k']] = $v['v'];
         }
         $data = $config;
 
     } else {
-        $result = $setting->where("k='{$k}'")->find();
-        $data = $result['v'];
-
+    	if($k == 'access_token'){
+    	    $data = $setting->where("k='{$k}'")->find();
+    	    $data = json_encode($data);
+	    }else{
+		    $result = $setting->where("k='{$k}'")->find();
+		    $data = $result['v'];
+	    }
     }
     //建立缓存
     if ($data) {
