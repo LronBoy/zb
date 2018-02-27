@@ -60,6 +60,13 @@ return array(
 		7 => '腰部',
 		8 => '胸部',
 	),
+	'ANCHOR_SERVE_WAY' => array(
+        1 => '小时',
+        2 => '天',
+        3 => '次',
+        4 => '局',
+        5 => '首'
+    ),
 	'WE_CHAT' => array(
 		'appid'     => 'wxbdcffa83b00c4563',
 		'appsecret' => 'dea68a7958f369c257bd4f1b4b7fd793'

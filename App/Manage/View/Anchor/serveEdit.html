@@ -1,0 +1,146 @@
+<include file="Public/head"/>
+<body class="no-skin">
+<include file="Public/header"/>
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try {
+            ace.settings.check('main-container', 'fixed')
+        } catch (e) {
+        }
+    </script>
+
+    <include file="Public/sidebar"/>
+    <div class="main-content">
+        <div class="main-content-inner">
+            <!-- #section:basics/content.breadcrumbs -->
+            <include file="Public/breadcrumbs"/>
+
+            <!-- /section:basics/content.breadcrumbs -->
+            <div class="page-content">
+                <include file="Public/set"/>
+
+                <!-- /section:settings.box -->
+                <div class="row">
+                    <div class="col-xs-12">
+                        <!-- PAGE CONTENT BEGINS -->
+                        <form class="form-horizontal" action="{:U('serveUpdate')}" method="post">
+                            <input name="anchor_type_id" value="{$anchor_type['anchor_type_id']}" type="hidden">
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right"> 主播名称 </label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="username" class="rcol-xs-10 col-sm-5" readonly value="{$anchor_type['username']}">
+                                    <span class="help-inline col-xs-12 col-sm-7">
+												<span class="middle"></span>
+											</span>
+                                </div>
+                            </div>
+                            <div class="space-4"></div>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right"> 服务分类 </label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="title" class="rcol-xs-10 col-sm-5" readonly value="{$anchor_type['title']}">
+                                    <span class="help-inline col-xs-12 col-sm-7">
+												<span class="middle"></span>
+											</span>
+                                </div>
+                            </div>
+                            <div class="space-4"></div>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right"> 分类等级 </label>
+
+                                <div class="col-sm-9">
+                                    <select id="pid" name="level" class="rcol-xs-10 col-sm-5">
+
+                                            <?php
+                                                                if(isset($anchor_type['class']) && !empty($anchor_type['class'])){
+                                                                    $class_array = explode(',',$anchor_type['class']);
+                                                                    foreach($class_array as $k_class => $v_class){
+                                            echo "<option value='".$k_class."'";
+                                            if($anchor_type['level'] == $k_class){
+                                                echo "selected='selected'";
+                                            }
+                                            echo ">".$v_class."</option>";
+                                            }
+                                            }
+                                            ?>
+
+                                    </select>
+                                    <span class="help-inline col-xs-12 col-sm-7">
+												<span class="middle"></span>
+											</span>
+                                </div>
+                            </div>
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                            <label class="col-sm-1 control-label no-padding-right" > 价格 </label>
+                            <div class="col-sm-9">
+                                <input type="number" name="price" class="rcol-xs-10 col-sm-5" value="{$anchor_type['price']}">
+                                {$anchor_type['way_str']}
+                            </div>
+                            </div>
+
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" > 接单次数 </label>
+                                <div class="col-sm-9">
+                                    <input type="number" name="num"  class="rcol-xs-10 col-sm-5" value="{$anchor_type['num']}">
+                                    次
+                                </div>
+                            </div>
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" > 分类描述 </label>
+                                <div class="col-sm-9">
+                                    <textarea name="description" id="tips" placeholder="分类描述" class="col-xs-10 col-sm-5"
+                                              rows="10">{$anchor_type['description']}</textarea>
+                                    <span class="help-inline col-xs-12 col-sm-7">
+												<span class="middle"></span>
+											</span>
+                                </div>
+                            </div>
+
+                            <div class="space-4"></div>
+                            <div class="col-md-offset-2 col-md-9">
+                                <button class="btn btn-info" type="submit">
+                                    <i class="icon-ok bigger-110"></i>
+                                    提交
+                                </button>
+
+                                &nbsp; &nbsp; &nbsp;
+                                <button class="btn" type="reset">
+                                    <i class="icon-undo bigger-110"></i>
+                                    重置
+                                </button>
+                            </div>
+                        </form>
+                        <!-- PAGE CONTENT ENDS -->
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.page-content -->
+        </div>
+    </div><!-- /.main-content -->
+    <include file="Public/footer"/>
+
+</div><!-- /.main-container -->
+
+<include file="Public/footerjs"/>
+<!-- inline scripts related to this page -->
+<script type="text/javascript">
+    $(function () {
+        var editor = KindEditor.create('textarea[name="description"]', {
+            resizeType: 1,
+            allowPreviewEmoticons: false,
+            allowImageUpload: false,
+            items: [
+                'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+                'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+                'insertunorderedlist', '|', 'emoticons', 'link']
+        });
+    })
+</script>
+
+</body>
+</html>

@@ -86,41 +86,46 @@ class AnchorController extends ComController{
     
     public function serve(){
 	    $p = isset($_GET['p']) ? intval($_GET['p']) : '1';
-	    $field = isset($_GET['field']) ? $_GET['field'] : '';
 	    $keyword = isset($_GET['keyword']) ? htmlentities($_GET['keyword']) : '';
-	    $order = isset($_GET['order']) ? $_GET['order'] : 'DESC';
-	    $where = '';
+
 	
 	    $prefix = C('DB_PREFIX');
-	
-	    if ($order == 'asc') {
-		    $order = "{$prefix}anchor.t desc";
-	    } elseif (($order == 'desc')) {
-		    $order = "{$prefix}anchor.t asc";
-	    } else {
-		    $order = "{$prefix}anchor.uid desc";
-	    }
+
+	    $anchor_id = isset($_GET['anchor_id']) ? intval(($_GET['anchor_id'])) : 0;
+	    if($anchor_id < 1){
+            $this->error('参数错误！');
+        }
+
+        $where = "{$prefix}anchor_type.anchor_id = {$anchor_id}";
+
 	    if ($keyword <> '') {
-		    $where = "{$prefix}member.user LIKE '%$keyword%'";
+		    $where .= " and {$prefix}serve_type.title LIKE '%$keyword%'";
 	    }
-	    $anchor = M('anchor');
+	    $anchor = M('anchorType');
 	    $pagesize = 10;//每页数量
 	    $offset = $pagesize * ($p - 1);//计算记录偏移量
-	    $count = $anchor->field("{$prefix}anchor.*,{$prefix}member.uid,{$prefix}member.user,{$prefix}member.username,{$prefix}member.sex,{$prefix}member.phone,{$prefix}auth_group.id as gid,{$prefix}auth_group.title")
-		    ->order($order)
-		    ->join("{$prefix}member ON {$prefix}anchor.uid = {$prefix}member.uid")
-		    ->join("{$prefix}auth_group_access ON {$prefix}member.uid = {$prefix}auth_group_access.uid")
-		    ->join("{$prefix}auth_group ON {$prefix}auth_group.id = {$prefix}auth_group_access.group_id")
+	    $count = $anchor->field("{$prefix}anchor_type.*,{$prefix}serve_type.title,{$prefix}serve_type.class,{$prefix}serve_type.way")
+		    ->join("{$prefix}serve_type ON {$prefix}anchor_type.serve_id = {$prefix}serve_type.serve_type_id")
 		    ->where($where)
 		    ->count();
-	    $list = $anchor->field("{$prefix}anchor.*,{$prefix}member.*,{$prefix}auth_group.id as gid,{$prefix}auth_group.title")
-		    ->order($order)
-		    ->join("{$prefix}member ON {$prefix}anchor.uid = {$prefix}member.uid")
-		    ->join("{$prefix}auth_group_access ON {$prefix}member.uid = {$prefix}auth_group_access.uid")
-		    ->join("{$prefix}auth_group ON {$prefix}auth_group.id = {$prefix}auth_group_access.group_id")
-		    ->where($where)
+	    $list = $anchor->field("{$prefix}anchor_type.*,{$prefix}serve_type.title,{$prefix}serve_type.class,{$prefix}serve_type.way")
+            ->join("{$prefix}serve_type ON {$prefix}anchor_type.serve_id = {$prefix}serve_type.serve_type_id")
+            ->where($where)
 		    ->limit($offset . ',' . $pagesize)
 		    ->select();
+
+	    if(is_array($list) && !empty($list)){
+	        $anchor_serve_way = C('ANCHOR_SERVE_WAY');
+
+            foreach ($list as $lk => &$lv){
+                //分类等级
+                $class_array_temp = isset($lv['class']) ? explode(',', $lv['class']) : array();
+                $lv['class_str']    = isset($class_array_temp[$lv['level']]) ? $class_array_temp[$lv['level']] : '无';
+                //收费类型
+                $lv['way_str']      = isset($anchor_serve_way[$lv['way']]) ? $anchor_serve_way[$lv['way']] : '无';
+            }
+        }
+
 	
 	    //$user->getLastSql();
 	    $page = new \Think\Page($count, $pagesize);
@@ -130,6 +135,106 @@ class AnchorController extends ComController{
 	    $this->assign('page', $page);
 	    $this->display();
     }
+
+
+    public function serveUpdate(){
+
+
+        $anchor_type_id  = isset($_POST['anchor_type_id']) ? intval($_POST['anchor_type_id']) : 0;
+
+
+
+        if($anchor_type_id < 1) $this->error('该分类不存在！');
+
+        //更新anchor主播信息表
+        $data['level']      = isset($_POST['level']) ? intval($_POST['level']) : 0;
+        $data['price']      = isset($_POST['price']) ? intval($_POST['price']) : 0;
+        $data['num']        = isset($_POST['num']) ? intval($_POST['num']) : 0;
+        $data['description']= isset($_POST['description']) ? trim($_POST['description']) : '';
+        $data['t']          = time();
+
+
+        M('anchorType') -> data($data) -> where("anchor_type_id=$anchor_type_id") -> save();
+        addlog('修改主播分类信息ID：' . $anchor_type_id);
+
+
+        $this->success('操作成功！');
+    }
+
+
+    /**
+     * description: 编辑主播分类
+     *+-----------------------------------------------
+     * @author:     jeffry  2018/2/27 20:54
+     * @access:     public
+     *+-----------------------------------------------
+     */
+    public function serveEdit(){
+        $anchor_type_id = isset($_GET['anchor_type_id']) ? intval($_GET['anchor_type_id']) : false;
+        if ($anchor_type_id) {
+            //$member = M('member')->where("uid='$uid'")->find();
+            $prefix = C('DB_PREFIX');
+            $anchor_type        = M('anchor_type');
+
+            $anchor_type_info = $anchor_type->field("{$prefix}anchor_type.*,{$prefix}anchor.uid,{$prefix}member.username,{$prefix}serve_type.title,{$prefix}serve_type.class,{$prefix}serve_type.way")
+                ->join("{$prefix}anchor ON {$prefix}anchor.anchor_id = {$prefix}anchor_type.anchor_id")
+                ->join("{$prefix}member ON {$prefix}anchor.uid = {$prefix}member.uid")
+                ->join("{$prefix}serve_type ON {$prefix}serve_type.serve_type_id = {$prefix}anchor_type.serve_id")
+                ->where("{$prefix}anchor_type.anchor_type_id=$anchor_type_id")
+                ->find();
+
+            if(is_array($anchor_type_info) && !empty($anchor_type_info)){
+                $anchor_serve_way = C('ANCHOR_SERVE_WAY');
+                $anchor_type_info['way_str'] = isset($anchor_serve_way[$anchor_type_info['way']]) ? $anchor_serve_way[$anchor_type_info['way']] : '';
+            }
+
+            $this->assign('anchor_type', $anchor_type_info);
+
+            $this->display('serveEdit');
+
+        }else{
+            $this->error('参数错误！');
+        }
+
+    }
+
+
+    /**
+     * description: 删除主播服务分类
+     *+-----------------------------------------------
+     * @author:     jeffry  2018/2/27 20:51
+     * @access:     public
+     *+-----------------------------------------------
+     */
+    public function serveDel(){
+        $uids = isset($_REQUEST['anchor_type_id']) ? $_REQUEST['anchor_type_id'] : false;
+        //uid为1的禁止删除
+        if (!$uids) {
+            $this->error('参数错误！');
+        }
+        if (is_array($uids)) {
+            foreach ($uids as $k => $v) {
+                if ($v == 1) {//uid为1的禁止删除
+                    unset($uids[$k]);
+                }
+                $uids[$k] = intval($v);
+            }
+            if (!$uids) {
+                $this->error('参数错误！');
+                $uids = implode(',', $uids);
+            }
+        }
+
+        $map['anchor_type_id'] = array('in', $uids);
+
+        if (M('anchorType')->where($map)->delete()) {
+            addlog('删除主播分类anchor_type_id：' . $uids);
+            $this->success('恭喜，删除主播分类成功！');
+        } else {
+            $this->error('参数错误！');
+        }
+    }
+
 	
 	/**
 	 * description: 主播删除
@@ -177,7 +282,7 @@ class AnchorController extends ComController{
         if (M('anchor')->where($map)->delete()) {
             M('anchor_type')->where($map)->delete();
             addlog('删除主播anchor_id：' . $uids);
-            $this->success('恭喜，用户主播成功！');
+            $this->success('恭喜，删除主播成功！');
         } else {
             $this->error('参数错误！');
         }
