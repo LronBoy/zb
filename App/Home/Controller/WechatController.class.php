@@ -17,19 +17,21 @@ namespace Home\Controller;
 use Org\WeChat\WeChat;
 
 class WechatController extends AppController{
-	private $wx_obj     = null;
 	
-	private $appID      = null;
+	protected $token          = null; //验证微信token
+	protected $appID          = null; //appID
+	protected $appSecret      = null; //appSecret
+	protected $wx_obj         = null; //微信操作对象
+	protected $access_token   = null; //access_token
 	
-	private $appSecret  = null;
 	
-	private $options;
+	protected $options;   //微信配置信息
+	protected $open_id;   //用户open_id
+	protected $wxUser;    //用户信息
 	
-	public $open_id;
 	
-	public $wxuser;
 	/**
-	 * description: 构造方法（获取token）
+	 * description: 构造方法（获取access_token）
 	 *+-----------------------------------------------
 	 * @author:     Pante  2018/2/27 15:14
 	 * @access:     public
@@ -37,32 +39,27 @@ class WechatController extends AppController{
 	 * @history:    更改记录
 	 */
 	public function _initialize(){
-		$weChat_config  = C('WE_CHAT');
 		
-		$this->appID    = $weChat_config['appid'];
-		$this->appSecret= $weChat_config['appsecret'];
+		//获取微信对象
+		$weChat_config          = C('WE_CHAT');
+		$this->options          = $weChat_config;
+		$this->token            = $weChat_config['token'];
+		$this->encodingAesKey   = $weChat_config['encodingaeskey'];
+		$this->appID            = $weChat_config['appid'];
+		$this->appSecret        = $weChat_config['appsecret'];
 		
-		$this->wx_obj   = new WeChat($weChat_config);
+		unset($weChat_config['encodingaeskey']);
+		$this->wx_obj           = new WeChat($weChat_config);
 		
-		//初始化access_token
+		//获取access_token
 		$access_token_array = json_decode(setting('access_token'),true);
-		
 		if(empty($access_token_array['v']) || (time() - $access_token_array['t']) > 7000){
-			
-			$access_token = $this->wx_obj -> checkAuth($this->appID, $this->appSecret);
-			
+			$this->access_token = $this->wx_obj -> checkAuth($this->appID, $this->appSecret);
 			//更新数据库
-			M('setting') -> data(array('v' => $access_token, 't' => time())) -> where("k='access_token'") -> save();
+			M('setting') -> data(array('v' => $this->access_token, 't' => time())) -> where("k='access_token'") -> save();
 		}else{
-			
-			$access_token = $this->wx_obj -> checkAuth($this->appID, $this->appSecret, $access_token_array['v']);
+			$this->access_token = $this->wx_obj -> checkAuth($this->appID, $this->appSecret, $access_token_array['v']);
 		}
-		
-		$this->options = array(
-			'token'=>$access_token, //填写你设定的key
-			'appid'=>$this->appID, //填写高级调用功能的app id, 请在微信开发模式后台查询
-			'appsecret'=>$this->appSecret, //填写高级调用功能的密钥
-		);
 	}
 	
 	
@@ -101,23 +98,24 @@ class WechatController extends AppController{
 		var_dump($result);
 	}
 	
+	
+	public function getUserInfo(){
+		$this->wxoAuth();
+		var_dump($_SESSION);
+	}
+	
+	
 	public function wxoAuth(){
 		$scope = 'snsapi_base';
-		$code = isset($_GET['code'])?$_GET['code']:'';
+		$code = isset($_GET['code']) ? $_GET['code']:'';
 		$token_time = isset($_SESSION['token_time'])?$_SESSION['token_time']:0;
 		if(!$code && isset($_SESSION['open_id']) && isset($_SESSION['user_token']) && $token_time>time()-3600) {
-			if (!$this->wxuser) {
-				$this->wxuser = $_SESSION['wxuser'];
+			if (!$this->wxUser) {
+				$this->wxUser = $_SESSION['wxuser'];
 			}
 			$this->open_id = $_SESSION['open_id'];
 			return $this->open_id;
 		} else {
-			$options = array(
-				'token'=>$this->options["token"], //填写你设定的key
-				'encodingaeskey'=>$this->options["encodingaeskey"], //填写加密用的EncodingAESKey
-				'appid'=>$this->options["appid"], //填写高级调用功能的app id
-				'appsecret'=>$this->options["appsecret"] //填写高级调用功能的密钥
-			);
 			
 			if ($code) {
 				$json = $this->wx_obj->getOauthAccessToken();
@@ -131,31 +129,35 @@ class WechatController extends AppController{
 				$_SESSION['token_time'] = time();
 				$userinfo = $this->wx_obj->getUserInfo($this->open_id);
 				
-				if ($userinfo && !empty($userinfo['nickname'])) {
-					$this->wxuser = array(
-						'open_id'=>$this->open_id,
-						'nickname'=>$userinfo['nickname'],
-						'sex'=>intval($userinfo['sex']),
-						'location'=>$userinfo['province'].'-'.$userinfo['city'],
-						'avatar'=>$userinfo['headimgurl']
+				if($userinfo && !empty($userinfo['nickname'])){
+					$this->wxUser = array(
+						'open_id'   =>$this->open_id,
+						'nickname'  =>$userinfo['nickname'],
+						'sex'       =>intval($userinfo['sex']),
+						'location'  =>$userinfo['province'].'-'.$userinfo['city'],
+						'province'  =>$userinfo['province'],
+						'city'      =>$userinfo['city'],
+						'avatar'    =>$userinfo['headimgurl']
 					);
-				} elseif (strstr($json['scope'],'snsapi_userinfo')!==false) {
+				} else if(strstr($json['scope'],'snsapi_userinfo')!==false) {
 					$userinfo = $this->wx_obj->getOauthUserinfo($access_token,$this->open_id);
 					if ($userinfo && !empty($userinfo['nickname'])) {
 						$this->wxuser = array(
-							'open_id'=>$this->open_id,
-							'nickname'=>$userinfo['nickname'],
-							'sex'=>intval($userinfo['sex']),
-							'location'=>$userinfo['province'].'-'.$userinfo['city'],
-							'avatar'=>$userinfo['headimgurl']
+							'open_id'   =>$this->open_id,
+							'nickname'  =>$userinfo['nickname'],
+							'sex'       =>intval($userinfo['sex']),
+							'location'  =>$userinfo['province'].'-'.$userinfo['city'],
+							'province'  =>$userinfo['province'],
+							'city'      =>$userinfo['city'],
+							'avatar'    =>$userinfo['headimgurl']
 						);
 					} else {
 						return $this->open_id;
 					}
 				}
 				if ($this->wxuser) {
-					$_SESSION['wxuser'] = $this->wxuser;
-					$_SESSION['open_id'] =  $json["openid"];
+					$_SESSION['wxuser']     = $this->wxuser;
+					$_SESSION['open_id']    =  $json["openid"];
 					unset($_SESSION['wx_redirect']);
 					return $this->open_id;
 				}

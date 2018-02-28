@@ -68,6 +68,8 @@ return array(
         5 => '首'
     ),
 	'WE_CHAT' => array(
+		'token'         => 'Jeffry',
+		'encodingaeskey'=> 'zxcvlkjhqwer0987',
 		'appid'     => 'wxbdcffa83b00c4563',
 		'appsecret' => 'dea68a7958f369c257bd4f1b4b7fd793'
 	),

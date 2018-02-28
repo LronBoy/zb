@@ -83,7 +83,74 @@ class AnchorController extends ComController{
         $this->assign('page', $page);
         $this->display();
     }
-    
+	
+	/**
+	 * description: 动态列表
+	 *+-----------------------------------------------
+	 * @author:     Pante  2018/2/28 11:14
+	 * @access:     public
+	 *+-----------------------------------------------
+	 * @history:    更改记录
+	 */
+    public function dynamic(){
+	    $p = isset($_GET['p']) ? intval($_GET['p']) : '1';
+	    $field = isset($_GET['field']) ? $_GET['field'] : '';
+	    $keyword = isset($_GET['keyword']) ? htmlentities($_GET['keyword']) : '';
+	    $order = isset($_GET['order']) ? $_GET['order'] : 'DESC';
+	    $where = '';
+	
+	    $prefix = C('DB_PREFIX');
+	
+	    if ($order == 'asc') {
+		    $order = "{$prefix}dynamic.t desc";
+	    } elseif (($order == 'desc')) {
+		    $order = "{$prefix}dynamic.t asc";
+	    } else {
+		    $order = "{$prefix}dynamic.dynamic_id desc";
+	    }
+	    if ($keyword <> '') {
+	    	if($field == 'user'){
+			    $where = "{$prefix}member.user LIKE '%$keyword%'";
+		    }
+		    if ($field == 'username') {
+			    $where = "{$prefix}member.username LIKE '%$keyword%'";
+		    }
+		    if ($field == 'content') {
+			    $where = "{$prefix}dynamic.content LIKE '%$keyword%'";
+		    }
+	    }
+	    $dynamic = M('dynamic');
+	    $pagesize = 10;//每页数量
+	    $offset = $pagesize * ($p - 1);//计算记录偏移量
+	    $count = $dynamic->field("{$prefix}dynamic.*,{$prefix}member.user,{$prefix}member.username")
+		    ->order($order)
+		    ->join("{$prefix}member ON {$prefix}dynamic.uid = {$prefix}member.uid")
+		    ->where($where)
+		    ->count();
+	    $list = $dynamic->field("{$prefix}dynamic.*,{$prefix}member.user,{$prefix}member.username")
+		    ->order($order)
+		    ->join("{$prefix}member ON {$prefix}dynamic.uid = {$prefix}member.uid")
+		    ->where($where)
+		    ->limit($offset . ',' . $pagesize)
+		    ->select();
+	
+	    //$user->getLastSql();
+	    $page = new \Think\Page($count, $pagesize);
+	    $page = $page->show();
+	    
+	    $this->assign('list', $list);
+	    $this->assign('page', $page);
+	    $this->display();
+    }
+	
+	/**
+	 * description: 主播分类列表
+	 *+-----------------------------------------------
+	 * @author:     Pante  2018/2/28 10:36
+	 * @access:     public
+	 *+-----------------------------------------------
+	 * @history:    更改记录
+	 */
     public function serve(){
 	    $p = isset($_GET['p']) ? intval($_GET['p']) : '1';
 	    $keyword = isset($_GET['keyword']) ? htmlentities($_GET['keyword']) : '';
@@ -135,15 +202,18 @@ class AnchorController extends ComController{
 	    $this->assign('page', $page);
 	    $this->display();
     }
-
-
+	
+	
+	/**
+	 * description: 主播分类更新
+	 *+-----------------------------------------------
+	 * @author:     Pante  2018/2/28 10:36
+	 * @access:     public
+	 *+-----------------------------------------------
+	 * @history:    更改记录
+	 */
     public function serveUpdate(){
-
-
         $anchor_type_id  = isset($_POST['anchor_type_id']) ? intval($_POST['anchor_type_id']) : 0;
-
-
-
         if($anchor_type_id < 1) $this->error('该分类不存在！');
 
         //更新anchor主播信息表
@@ -152,12 +222,10 @@ class AnchorController extends ComController{
         $data['num']        = isset($_POST['num']) ? intval($_POST['num']) : 0;
         $data['description']= isset($_POST['description']) ? trim($_POST['description']) : '';
         $data['t']          = time();
-
-
+	    
         M('anchorType') -> data($data) -> where("anchor_type_id=$anchor_type_id") -> save();
         addlog('修改主播分类信息ID：' . $anchor_type_id);
-
-
+	    
         $this->success('操作成功！');
     }
 
