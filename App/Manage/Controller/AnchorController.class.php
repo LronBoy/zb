@@ -144,6 +144,126 @@ class AnchorController extends ComController{
     }
 	
 	/**
+	 * description: 新增动态
+	 *+-----------------------------------------------
+	 * @author:     Pante  2018/3/1 15:57
+	 * @access:     public
+	 *+-----------------------------------------------
+	 * @history:    更改记录
+	 */
+	public function dynamicAdd(){
+    	$uid = isset($_GET['uid']) ? $_GET['uid'] : 0;
+    	$user_info = M('member') -> field('user,username') -> where("uid={$uid}") -> find();
+    	$this->assign('dynamic_info', $user_info);
+		$this->display('dynamicEdit');
+	}
+	
+	
+	/**
+	 * description: 编辑动态
+	 *+-----------------------------------------------
+	 * @author:     Pante  2018/3/1 15:35
+	 * @access:     public
+	 *+-----------------------------------------------
+	 * @history:    更改记录
+	 */
+	public function dynamicUpdate(){
+		$dynamic_id     = isset($_POST['dynamic_id']) ? intval($_POST['dynamic_id']) : 0;
+		$uid            = isset($_POST['uid']) ? intval($_POST['uid']) : false;
+		$data['content']= isset($_POST['content']) ? htmlspecialchars($_POST['content'], ENT_QUOTES) : '';
+		if($data['content'] == '') $this->error("必须填动态内容");
+		$image          = I('post.image', '', 'strip_tags');
+		$data['image']  = $image ? $image : '';
+		if($data['image'] == '') $this->error("必须上传图像");
+		
+		$data['t']      = time();
+		$data['u']      = time();
+		
+		//新建
+		if (!$dynamic_id) {
+			if ($uid == false) {
+				$this->error('参数错误！');
+			}
+			$data['uid'] = $uid;
+			$data['t'] = time();
+			//用户表
+			$dynamicID = M('dynamic')->data($data)->add();
+			addlog('新增用户ID为'.$uid.'用户动态ID：' . $dynamicID);
+			$this->success('操作成功！', U('anchor/dynamicEdit', array('dynamic_id'=>$dynamicID,'uid'=>$uid)));
+		} else {
+			M('dynamic')->data($data)->where("dynamic_id=$dynamic_id")->save();
+			addlog('编辑用户ID为'.$uid.'用户动态ID：' . $dynamic_id);
+			$this->success('操作成功！');
+		}
+		
+	}
+	/**
+	 * description: 编辑主播动态
+	 *+-----------------------------------------------
+	 * @author:     jeffry  2018/2/27 20:54
+	 * @access:     public
+	 *+-----------------------------------------------
+	 */
+	public function dynamicEdit(){
+		$dynamic_id = isset($_GET['dynamic_id']) ? intval($_GET['dynamic_id']) : false;
+		if ($dynamic_id) {
+			//$member = M('member')->where("uid='$uid'")->find();
+			$prefix = C('DB_PREFIX');
+			$anchor_type        = M('dynamic');
+			
+			$dynamic_info = $anchor_type->field("{$prefix}dynamic.*,{$prefix}member.user,{$prefix}member.username")
+				->join("{$prefix}member ON {$prefix}dynamic.uid = {$prefix}member.uid")
+				->where("{$prefix}dynamic.dynamic_id=$dynamic_id")
+				->find();
+			
+			
+			$this->assign('dynamic_info', $dynamic_info);
+			
+			$this->display('dynamicEdit');
+		}else{
+			$this->error('参数错误！');
+		}
+		
+	}
+	
+	/**
+	 * description: 删除主播动态
+	 *+-----------------------------------------------
+	 * @author:     jeffry  2018/2/27 20:51
+	 * @access:     public
+	 *+-----------------------------------------------
+	 */
+	public function dynamicDel(){
+		$uids = isset($_REQUEST['dynamic_id']) ? $_REQUEST['dynamic_id'] : false;
+		
+		//uid为1的禁止删除
+		if (!$uids) {
+			$this->error('参数错误！');
+		}
+		if (is_array($uids)) {
+			foreach ($uids as $k => $v) {
+				if ($v == 1) {//uid为1的禁止删除
+					unset($uids[$k]);
+				}
+				$uids[$k] = intval($v);
+			}
+			if (!$uids) {
+				$this->error('参数错误！');
+				$uids = implode(',', $uids);
+			}
+		}
+		
+		$map['dynamic_id'] = array('in', $uids);
+		
+		if (M('dynamic')->where($map)->delete()) {
+			addlog('删除主播动态dynamic_id：' . $uids);
+			$this->success('恭喜，删除主播动态成功！');
+		} else {
+			$this->error('参数错误！');
+		}
+	}
+	
+	/**
 	 * description: 主播分类列表
 	 *+-----------------------------------------------
 	 * @author:     Pante  2018/2/28 10:36

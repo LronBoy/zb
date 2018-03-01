@@ -55,6 +55,7 @@
                                         <th class="center">手机</th>
                                         <th class="center">余额</th>
                                         <th class="center">入驻时间</th>
+                                        <th class="center">新增动态</th>
                                         <th class="center">服务管理</th>
                                         <th class="center">操作</th>
                                     </tr>
@@ -94,6 +95,7 @@
                                             <td class="center">{$val['phone']}</td>
                                             <td class="center">{$val['balance']}</td>
                                             <td class="center">{$val['t']|date="Y-m-d",###}</td>
+                                            <td class="center"><a href="{:U('dynamicAdd',array('uid'=>$val['uid']))}">新增动态</a></td>
                                             <td class="center"><a href="{:U('serve',array('anchor_id'=>$val['anchor_id']))}">服务管理</a></td>
                                             <td class="center"><a href="{:U('edit',array('anchor_id'=>$val['anchor_id']))}">修改</a>&nbsp;
                                                 <if condition="$val['uid'] neq 1">

@@ -28,13 +28,14 @@
                                 <label class="inline">主播搜索</label>
                                 <select name="field" class="form-control">
                                     <option <if condition="I('field') eq user">selected</if> value="user">用户名</option>
-                                    <option <if condition="I('field') eq phone">selected</if> value="phone">手机</option>
+                                    <option <if condition="I('field') eq username">selected</if> value="username">昵称</option>
+                                    <option <if condition="I('field') eq content">selected</if> value="content">动态</option>
                                 </select>
                                 <input type="text" name="keyword" value="{:I(keyword)}" class="form-control">
                                 <label class="inline">&nbsp;&nbsp;排序：</label>
                                 <select name="order" class="form-control">
-                                    <option <if condition="I('order') eq asc">selected</if> value="asc">入驻时间升</option>
-                                    <option <if condition="I('order') eq desc">selected</if> value="desc">入驻时间降</option>
+                                    <option <if condition="I('order') eq asc">selected</if> value="asc">发布时间升</option>
+                                    <option <if condition="I('order') eq desc">selected</if> value="desc">发布时间降</option>
                                 </select>
                                 <button type="submit" class="btn btn-purple btn-sm">
                                     <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
@@ -44,19 +45,16 @@
                         </div>
                         <div class="space-4"></div>
                         <div class="row">
-                            <form id="form" method="post" action="{:U('del')}">
+                            <form id="form" method="post" action="{:U('dynamicDel')}">
                                 <table class="table table-striped table-bordered table-hover">
                                     <thead>
                                     <tr>
-                                        <th class="center"><input class="check-all" type="checkbox" value=""></th>
-                                        <th>用户名</th>
-                                        <th class="center">性别</th>
-                                        <th class="center">生日</th>
-                                        <th class="center">手机</th>
-                                        <th class="center">余额</th>
-                                        <th class="center">入驻时间</th>
-                                        <th class="center">服务管理</th>
-                                        <th class="center">操作</th>
+                                        <th class="center" style="width: 3%"><input class="check-all" type="checkbox" value=""></th>
+                                        <th class="center" style="width: 10%">用户名</th>
+                                        <th class="center" style="width: 10%">昵称</th>
+                                        <th style="width: 52%">内容</th>
+                                        <th class="center" style="width: 15%">时间</th>
+                                        <th class="center" style="width: 10%">操作</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -82,24 +80,15 @@
                                     <volist name="list" id="val">
                                         <tr>
                                             <td class="center">
-                                                <if condition="$val['uid'] neq 1"><input class="uids" type="checkbox"
-                                                                                         name="uids[]"
-                                                                                         value="{$val['uid']}">
-                                                    <else/>
-                                                    <span title="系统管理员，禁止删除">--</span></if>
+                                                <input class="uids" type="checkbox" name="dynamic_id[]" value="{$val['dynamic_id']}">
                                             </td>
-                                            <td>{$val['user']}</td>
-                                            <td class="center"><?php if($val['sex']==1){echo '男';}elseif($val['sex']==2){echo '女';}else{echo '保密';} ?></td>
-                                            <td class="center">{$val['birthday']|date="Y-m-d",###}</td>
-                                            <td class="center">{$val['phone']}</td>
-                                            <td class="center">{$val['balance']}</td>
-                                            <td class="center">{$val['t']|date="Y-m-d",###}</td>
-                                            <td class="center"><a href="{:U('serve',array('anchor_id'=>$val['anchor_id']))}">服务管理</a></td>
-                                            <td class="center"><a href="{:U('edit',array('anchor_id'=>$val['anchor_id']))}">修改</a>&nbsp;
-                                                <if condition="$val['uid'] neq 1">
-                                                    <a class="del" href="javascript:;"
-                                                       val="{:U('del',array('anchor_id'=>$val['anchor_id']))}"
-                                                       title="删除">删除</a></if>
+                                            <td class="center">{$val['user']}</td>
+                                            <td class="center">{$val['username']}</td>
+                                            <td>{$val['content']}</td>
+                                            <td class="center">{$val['t']|date="Y-m-d H:i:s",###}</td>
+                                            <td class="center">
+                                                <a href="{:U('dynamicEdit',array('dynamic_id'=>$val['dynamic_id'],'uid'=>$val['uid']))}">修改</a>&nbsp;
+                                                <a class="del" href="javascript:void (0);" val="{:U('dynamicDel',array('dynamic_id'=>$val['dynamic_id']))}" title="删除">删除</a>
                                             </td>
                                         </tr>
                                     </volist>
@@ -125,21 +114,6 @@
 <!-- inline scripts related to this page -->
 <script type="text/javascript">
     $(function () {
-        $(".group").click(function () {
-            $(this).addClass('hide');
-            $(this).parent().find(".groupselect").removeClass('hide');
-        })
-        $(".groupselect").on("change", function () {
-            var ob = $(this);
-            var gid = ob.val();
-            var uid = ob.parent().find('.group').attr('val');
-            $.get("{:U('update')}?ajax=yes&uid=" + uid + "&gid=" + gid, function (data) {
-                var text = ob.find("option:selected").text();
-                ob.parent().find(".group").removeClass('hide').html(text);
-                ob.addClass('hide');
-            });
-        })
-
         $(".check-all").click(function () {
             $(".uids").prop("checked", this.checked);
         });
@@ -157,7 +131,7 @@
         $("#submit").click(function () {
             bootbox.confirm({
                 title: "系统提示",
-                message: "是否要删除所选用户？",
+                message: "是否要删除所选动态？",
                 callback: function (result) {
                     if (result) {
                         $("#form").submit();
@@ -176,7 +150,7 @@
             var url = $(this).attr('val');
             bootbox.confirm({
                 title: "系统提示",
-                message: "是否要删除该用户?",
+                message: "是否要删除该动态?",
                 callback: function (result) {
                     if (result) {
                         window.location.href = url;
