@@ -78,9 +78,7 @@ class ServeController extends ComController
         $this->display();
     }
 
-    public function del()
-    {
-
+    public function del(){
         $aids = isset($_REQUEST['aids']) ? $_REQUEST['aids'] : false;
         if ($aids) {
             if (is_array($aids)) {
@@ -98,7 +96,6 @@ class ServeController extends ComController
         } else {
             $this->error('参数错误！');
         }
-
     }
 
     public function edit($aid)

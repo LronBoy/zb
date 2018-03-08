@@ -44,6 +44,8 @@
 
 namespace Org\WeChat;
 
+use Think\Log;
+
 class Wechat
 {
 	const MSGTYPE_TEXT = 'text';
@@ -244,12 +246,12 @@ class Wechat
 
 	public function __construct($options)
 	{
-		$this->token = isset($options['token'])?$options['token']:'';
-		$this->encodingAesKey = isset($options['encodingaeskey'])?$options['encodingaeskey']:'';
-		$this->appid = isset($options['appid'])?$options['appid']:'';
-		$this->appsecret = isset($options['appsecret'])?$options['appsecret']:'';
-		$this->debug = isset($options['debug'])?$options['debug']:false;
-		$this->logcallback = isset($options['logcallback'])?$options['logcallback']:false;
+		$this->token = isset($options['token'])?$options['token']:'';                               //填写应用接口的Token
+		$this->encodingAesKey = isset($options['encodingaeskey'])?$options['encodingaeskey']:'';    //填写加密用的EncodingAESKey
+		$this->appid = isset($options['appid'])?$options['appid']:'';                               //填写高级调用功能的app id
+		$this->appsecret = isset($options['appsecret'])?$options['appsecret']:'';                   //填写高级调用功能的密钥
+		$this->debug = isset($options['debug'])?$options['debug']:false;                            //调试开关
+		$this->logcallback = isset($options['logcallback'])?$options['logcallback']:false;          //调试输出方法，需要有一个string类型的参数
 	}
 
 	/**
@@ -360,12 +362,17 @@ class Wechat
      * @param mixed $log 输入日志
      * @return mixed
      */
-    protected function log($log){
-    		if ($this->debug && function_exists($this->logcallback)) {
-    			if (is_array($log)) $log = print_r($log,true);
-    			return call_user_func($this->logcallback,$log);
-    		}
-    }
+	protected function log($log){
+		if ($this->debug) {
+			if (function_exists($this->logcallback)) {
+				if (is_array($log)) $log = print_r($log,true);
+				return call_user_func($this->logcallback,$log);
+			}elseif (class_exists('Log')) {
+				Log::write('wechat：'.$log, Log::DEBUG);
+			}
+		}
+		return false;
+	}
 
     /**
      * 获取微信服务器发来的信息
@@ -1180,8 +1187,7 @@ class Wechat
 	 * @return boolean
 	 */
 	protected function setCache($cachename,$value,$expired){
-		//TODO: set cache implementation
-		return false;
+		return S($cachename,$value,$expired);
 	}
 
 	/**
@@ -1190,8 +1196,7 @@ class Wechat
 	 * @return mixed
 	 */
 	protected function getCache($cachename){
-		//TODO: get cache implementation
-		return false;
+		return S($cachename);
 	}
 
 	/**
@@ -1200,8 +1205,7 @@ class Wechat
 	 * @return boolean
 	 */
 	protected function removeCache($cachename){
-		//TODO: remove cache implementation
-		return false;
+		return S($cachename,null);
 	}
 
 	/**
@@ -2560,8 +2564,12 @@ class Wechat
 	 * 通过code获取Access Token
 	 * @return array {access_token,expires_in,refresh_token,openid,scope}
 	 */
-	public function getOauthAccessToken(){
-		$code = isset($_GET['code'])?$_GET['code']:'';
+	public function getOauthAccessToken($get_code=''){
+		if($get_code == ''){
+			$code = isset($_GET['code'])?$_GET['code']:'';
+		}else{
+			$code = $get_code;
+		}
 		if (!$code) return false;
 		$result = $this->http_get(self::API_BASE_URL_PREFIX.self::OAUTH_TOKEN_URL.'appid='.$this->appid.'&secret='.$this->appsecret.'&code='.$code.'&grant_type=authorization_code');
 		if ($result)
