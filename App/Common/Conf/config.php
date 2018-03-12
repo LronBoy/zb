@@ -69,9 +69,9 @@ return array(
     ),
 	'WE_CHAT' => array(
 		'token'         => 'Jeffry',
-		'encodingaeskey'=> 'zxcvlkjhqwer0987',
-		'appid'     => 'wxbdcffa83b00c4563',
-		'appsecret' => 'dea68a7958f369c257bd4f1b4b7fd793',
+		'encodingaeskey'=> 'kgbhMAHG2Q7jcIkMxnfXdM3QBl4L0I9XbJ2zOjVWSde',
+		'appid'     => 'wxac5ee19ee8d559cf',
+		'appsecret' => 'e5cdbf5f9db9c7b6459976660b57dd4f',
 		'debug'         => true,
 		'logcallback'   => false,
 	),
