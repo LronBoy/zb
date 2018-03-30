@@ -10,10 +10,26 @@ Target Server Type    : MYSQL
 Target Server Version : 50720
 File Encoding         : 65001
 
-Date: 2018-02-27 17:22:39
+Date: 2018-03-30 09:43:44
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for ath_users_base
+-- ----------------------------
+DROP TABLE IF EXISTS `ath_users_base`;
+CREATE TABLE `ath_users_base` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `switch_school_time` int(11) DEFAULT NULL,
+  `campus_school` tinyint(1) DEFAULT '0',
+  `campus_school_time` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of ath_users_base
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for zb_anchor
@@ -108,7 +124,7 @@ INSERT INTO `zb_anchor_type` VALUES ('14', '14', '6', '1', '0', '3600', null, '0
 INSERT INTO `zb_anchor_type` VALUES ('15', '15', '7', '2', '0', '3600', null, '0');
 INSERT INTO `zb_anchor_type` VALUES ('16', '16', '8', '3', '0', '3600', null, '0');
 INSERT INTO `zb_anchor_type` VALUES ('17', '17', '1', '4', '0', '3600', null, '0');
-INSERT INTO `zb_anchor_type` VALUES ('35', '18', '3', '2', '0', '0', null, '0');
+INSERT INTO `zb_anchor_type` VALUES ('35', '18', '3', '2', '0', '12', '', '1519784278');
 INSERT INTO `zb_anchor_type` VALUES ('19', '19', '3', '1', '0', '3600', null, '0');
 INSERT INTO `zb_anchor_type` VALUES ('20', '20', '4', '2', '0', '3600', null, '0');
 INSERT INTO `zb_anchor_type` VALUES ('21', '21', '5', '3', '0', '3600', null, '0');
@@ -213,6 +229,7 @@ INSERT INTO `zb_auth_group_access` VALUES ('28', '2');
 INSERT INTO `zb_auth_group_access` VALUES ('29', '2');
 INSERT INTO `zb_auth_group_access` VALUES ('30', '2');
 INSERT INTO `zb_auth_group_access` VALUES ('31', '2');
+INSERT INTO `zb_auth_group_access` VALUES ('32', '1');
 
 -- ----------------------------
 -- Table structure for zb_auth_rule
@@ -231,7 +248,7 @@ CREATE TABLE `zb_auth_rule` (
   `o` int(11) NOT NULL COMMENT '排序',
   `tips` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=74 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=83 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of zb_auth_rule
@@ -247,22 +264,17 @@ INSERT INTO `zb_auth_rule` VALUES ('8', '2', 'Menu/del', '删除菜单', 'menu-i
 INSERT INTO `zb_auth_rule` VALUES ('9', '2', 'Database/backup', '数据库备份', 'menu-icon fa fa-caret-right', '1', '1', '', '1', '7', '');
 INSERT INTO `zb_auth_rule` VALUES ('10', '9', 'Database/recovery', '数据库还原', '', '1', '1', '', '0', '10', '');
 INSERT INTO `zb_auth_rule` VALUES ('13', '0', '', '用户管理', 'menu-icon fa fa-users', '1', '1', '', '1', '4', '');
-INSERT INTO `zb_auth_rule` VALUES ('14', '13', 'Member/index', '用户管理', 'menu-icon fa fa-caret-right', '1', '1', '', '1', '14', '');
-INSERT INTO `zb_auth_rule` VALUES ('15', '13', 'Member/add', '新增用户', 'menu-icon fa fa-caret-right', '1', '1', '', '1', '15', '');
-INSERT INTO `zb_auth_rule` VALUES ('16', '13', 'Member/edit', '编辑用户', 'menu-icon fa fa-caret-right', '1', '1', '', '0', '16', '');
-INSERT INTO `zb_auth_rule` VALUES ('17', '13', 'Member/update', '保存用户', 'menu-icon fa fa-caret-right', '1', '1', '', '0', '17', '');
-INSERT INTO `zb_auth_rule` VALUES ('18', '13', 'Member/del', '删除用户', '', '1', '1', '', '0', '18', '');
+INSERT INTO `zb_auth_rule` VALUES ('14', '13', 'Member/index', '用户管理', 'menu-icon fa fa-caret-right', '1', '1', '', '1', '1', '');
+INSERT INTO `zb_auth_rule` VALUES ('15', '13', 'Member/add', '新增用户', 'menu-icon fa fa-caret-right', '1', '1', '', '1', '2', '');
+INSERT INTO `zb_auth_rule` VALUES ('16', '13', 'Member/edit', '编辑用户', 'menu-icon fa fa-caret-right', '1', '1', '', '0', '3', '');
+INSERT INTO `zb_auth_rule` VALUES ('17', '13', 'Member/update', '保存用户', 'menu-icon fa fa-caret-right', '1', '1', '', '0', '4', '');
+INSERT INTO `zb_auth_rule` VALUES ('18', '13', 'Member/del', '删除用户', '', '1', '1', '', '0', '5', '');
 INSERT INTO `zb_auth_rule` VALUES ('19', '13', 'Group/index', '用户组管理', 'menu-icon fa fa-caret-right', '1', '1', '', '1', '19', '');
 INSERT INTO `zb_auth_rule` VALUES ('20', '13', 'Group/add', '新增用户组', 'menu-icon fa fa-caret-right', '1', '1', '', '1', '20', '');
 INSERT INTO `zb_auth_rule` VALUES ('21', '13', 'Group/edit', '编辑用户组', 'menu-icon fa fa-caret-right', '1', '1', '', '0', '21', '');
 INSERT INTO `zb_auth_rule` VALUES ('22', '13', 'Group/update', '保存用户组', 'menu-icon fa fa-caret-right', '1', '1', '', '0', '22', '');
 INSERT INTO `zb_auth_rule` VALUES ('23', '13', 'Group/del', '删除用户组', '', '1', '1', '', '0', '23', '');
 INSERT INTO `zb_auth_rule` VALUES ('24', '0', '', '网站内容', 'menu-icon fa fa-desktop', '1', '1', '', '1', '24', '');
-INSERT INTO `zb_auth_rule` VALUES ('25', '24', 'Serve/index', '主播服务管理', 'menu-icon fa fa-caret-right', '1', '1', '', '1', '25', '网站虽然重要，身体更重要，出去走走吧。');
-INSERT INTO `zb_auth_rule` VALUES ('26', '24', 'Serve/add', '新增主播服务', 'menu-icon fa fa-caret-right', '1', '1', '', '1', '26', '');
-INSERT INTO `zb_auth_rule` VALUES ('27', '24', 'Serve/edit', '编辑主播服务', 'menu-icon fa fa-caret-right', '1', '1', '', '0', '27', '');
-INSERT INTO `zb_auth_rule` VALUES ('29', '24', 'Serve/update', '保存主播服务', 'menu-icon fa fa-caret-right', '1', '1', '', '0', '29', '');
-INSERT INTO `zb_auth_rule` VALUES ('30', '24', 'Serve/del', '删除主播服务', '', '1', '1', '', '0', '30', '');
 INSERT INTO `zb_auth_rule` VALUES ('31', '24', 'Category/index', '主播分类管理', 'menu-icon fa fa-caret-right', '1', '1', '', '1', '31', '');
 INSERT INTO `zb_auth_rule` VALUES ('32', '24', 'Category/add', '新增主播分类', 'menu-icon fa fa-caret-right', '1', '1', '', '1', '32', '');
 INSERT INTO `zb_auth_rule` VALUES ('33', '24', 'Category/edit', '编辑主播分类', 'menu-icon fa fa-caret-right', '1', '1', '', '0', '33', '');
@@ -295,12 +307,21 @@ INSERT INTO `zb_auth_rule` VALUES ('60', '58', 'variable/edit', '编辑变量', 
 INSERT INTO `zb_auth_rule` VALUES ('61', '58', 'variable/update', '保存变量', '', '1', '1', '', '0', '0', '');
 INSERT INTO `zb_auth_rule` VALUES ('62', '58', 'variable/del', '删除变量', '', '1', '1', '', '0', '0', '');
 INSERT INTO `zb_auth_rule` VALUES ('66', '73', 'Anchor/index', '主播管理', 'menu-icon fa fa-caret-right', '1', '1', '', '1', '1', '');
-INSERT INTO `zb_auth_rule` VALUES ('67', '73', 'Anchor/check', '主播审核', 'menu-icon fa fa-caret-right', '1', '1', '', '1', '2', '');
+INSERT INTO `zb_auth_rule` VALUES ('67', '73', 'Anchor/check', '主播审核', 'menu-icon fa fa-caret-right', '1', '1', '', '1', '20', '');
 INSERT INTO `zb_auth_rule` VALUES ('73', '0', '', '主播管理', 'menu-icon fa fa-heart', '1', '1', '', '1', '3', '');
-INSERT INTO `zb_auth_rule` VALUES ('69', '73', 'Anchor/edit', '编辑主播', 'menu-icon fa fa-caret-right', '1', '1', '', '0', '3', '');
-INSERT INTO `zb_auth_rule` VALUES ('70', '73', 'Anchor/update', '保存主播', 'menu-icon fa fa-caret-right', '1', '1', '', '0', '4', '');
-INSERT INTO `zb_auth_rule` VALUES ('71', '73', 'Anchor/del', '删除主播', 'menu-icon fa fa-caret-right', '1', '1', '', '0', '5', '');
-INSERT INTO `zb_auth_rule` VALUES ('72', '73', 'Anchor/checkUpdate', '保存审核', 'menu-icon fa fa-caret-right', '1', '1', '', '0', '7', '');
+INSERT INTO `zb_auth_rule` VALUES ('69', '73', 'Anchor/edit', '编辑主播', 'menu-icon fa fa-caret-right', '1', '1', '', '0', '2', '');
+INSERT INTO `zb_auth_rule` VALUES ('70', '73', 'Anchor/update', '保存主播', 'menu-icon fa fa-caret-right', '1', '1', '', '0', '3', '');
+INSERT INTO `zb_auth_rule` VALUES ('71', '73', 'Anchor/del', '删除主播', 'menu-icon fa fa-caret-right', '1', '1', '', '0', '4', '');
+INSERT INTO `zb_auth_rule` VALUES ('72', '73', 'Anchor/checkUpdate', '保存审核', 'menu-icon fa fa-caret-right', '1', '1', '', '0', '21', '');
+INSERT INTO `zb_auth_rule` VALUES ('74', '73', 'Anchor/dynamic', '动态管理', 'menu-icon fa fa-caret-right', '1', '1', '', '1', '10', '');
+INSERT INTO `zb_auth_rule` VALUES ('75', '73', 'Anchor/dynamicAdd', '新增动态', 'menu-icon fa fa-caret-right', '1', '1', '', '0', '11', '');
+INSERT INTO `zb_auth_rule` VALUES ('76', '73', 'Anchor/dynamicDel', '删除动态', 'menu-icon fa fa-caret-right', '1', '1', '', '0', '12', '');
+INSERT INTO `zb_auth_rule` VALUES ('77', '73', 'Anchor/dynamicEdit', '编辑动态', 'menu-icon fa fa-caret-right', '1', '1', '', '0', '13', '');
+INSERT INTO `zb_auth_rule` VALUES ('78', '73', 'Anchor/dynamicUpdate', '更新动态', 'menu-icon fa fa-caret-right', '1', '1', '', '0', '14', '');
+INSERT INTO `zb_auth_rule` VALUES ('79', '73', 'Anchor/serve', '服务管理', 'menu-icon fa fa-caret-right', '1', '1', '', '0', '5', '');
+INSERT INTO `zb_auth_rule` VALUES ('80', '73', 'Anchor/serveDel', '删除服务', 'menu-icon fa fa-caret-right', '1', '1', '', '0', '6', '');
+INSERT INTO `zb_auth_rule` VALUES ('81', '73', 'Anchor/serveEdit', '编辑服务', 'menu-icon fa fa-caret-right', '1', '1', '', '0', '6', '');
+INSERT INTO `zb_auth_rule` VALUES ('82', '73', 'Anchor/serveUpdate', '更新服务', 'menu-icon fa fa-caret-right', '1', '1', '', '0', '7', '');
 
 -- ----------------------------
 -- Table structure for zb_comment
@@ -327,16 +348,25 @@ DROP TABLE IF EXISTS `zb_dynamic`;
 CREATE TABLE `zb_dynamic` (
   `dynamic_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键自增',
   `uid` int(11) unsigned NOT NULL COMMENT '用户ID',
-  `title` varchar(255) NOT NULL COMMENT '动态标题',
+  `content` varchar(255) NOT NULL COMMENT '动态标题',
   `image` varchar(255) NOT NULL COMMENT '动态图片地址',
   `t` int(11) unsigned NOT NULL COMMENT '创建时间',
   `u` int(11) unsigned DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`dynamic_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='主播动态表';
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='主播动态表';
 
 -- ----------------------------
 -- Records of zb_dynamic
 -- ----------------------------
+INSERT INTO `zb_dynamic` VALUES ('2', '18', '测试2阿凡达散发洒洒的阿斯蒂芬撒旦法撒旦法岁的法撒旦个阿斯顿gas电话噶都是短发哈达粉红色的粉红色的风格还是地方工会岁的法', '/Public/attached/2018/02/12/5a8103c7ed2a01.jpg', '1518404592', '1518404590');
+INSERT INTO `zb_dynamic` VALUES ('3', '18', '测试3阿凡达散发洒洒的阿斯蒂芬撒旦法撒旦法岁的法撒旦个阿斯顿gas电话噶都是短发哈达粉红色的粉红色的风格还是地方工会岁的法', '/Public/attached/2018/02/12/5a8103c7ed2a01.jpg', '1518404593', '1518404590');
+INSERT INTO `zb_dynamic` VALUES ('6', '31', '测试6阿凡达散发洒洒的阿斯蒂芬撒旦法撒旦法岁的法撒旦个阿斯顿gas电话噶都是短发哈达粉红色的粉红色的风格还是地方工会岁的法', '/Public/attached/2018/02/12/5a8103c7ed2a01.jpg', '1518404596', '1518404590');
+INSERT INTO `zb_dynamic` VALUES ('7', '31', '测试7阿凡达散发洒洒的阿斯蒂芬撒旦法撒旦法岁的法撒旦个阿斯顿', '/Public/attached/2018/03/01/5a97ad2d58320.jpg', '1519889710', '1519889710');
+INSERT INTO `zb_dynamic` VALUES ('8', '0', '新增动态哟', '/Public/attached/2018/03/01/5a97b021c4694.jpg', '1519890467', '1519890467');
+INSERT INTO `zb_dynamic` VALUES ('11', '31', '三大gas的gas', '/Public/attached/2018/03/01/5a97b382c0ed1.jpg', '1519891331', '1519891331');
+INSERT INTO `zb_dynamic` VALUES ('12', '26', '阿斯顿感sad个', '/Public/attached/2018/03/01/5a97b3a6ce616.jpg', '1519891505', '1519891505');
+INSERT INTO `zb_dynamic` VALUES ('9', '31', '阿斯顿gas的gas多个', '/Public/attached/2018/03/01/5a97b16ef07a7.jpg', '1519890800', '1519890800');
+INSERT INTO `zb_dynamic` VALUES ('10', '28', '阿斯顿感sad哥仨多个', '/Public/attached/2018/03/01/5a97b2d832494.jpg', '1519891160', '1519891160');
 
 -- ----------------------------
 -- Table structure for zb_flash
@@ -406,7 +436,7 @@ CREATE TABLE `zb_log` (
   `ip` varchar(16) NOT NULL,
   `log` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=122 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=170 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of zb_log
@@ -532,6 +562,54 @@ INSERT INTO `zb_log` VALUES ('118', 'admin', '1519622632', '127.0.0.1', '更新�
 INSERT INTO `zb_log` VALUES ('119', 'admin', '1519622632', '127.0.0.1', '修改主播信息ID：18');
 INSERT INTO `zb_log` VALUES ('120', 'admin', '1519622632', '127.0.0.1', '更新主播分类等级：主播ID18');
 INSERT INTO `zb_log` VALUES ('121', 'admin', '1519711065', '127.0.0.1', '登录成功。');
+INSERT INTO `zb_log` VALUES ('122', 'admin', '1519784278', '127.0.0.1', '修改主播分类信息ID：35');
+INSERT INTO `zb_log` VALUES ('123', 'admin', '1519785329', '127.0.0.1', '新增菜单，名称：动态管理');
+INSERT INTO `zb_log` VALUES ('124', 'admin', '1519883205', '127.0.0.1', '登录成功。');
+INSERT INTO `zb_log` VALUES ('125', 'admin', '1519884273', '127.0.0.1', '删除主播动态dynamic_id：1');
+INSERT INTO `zb_log` VALUES ('126', 'admin', '1519884440', '127.0.0.1', '删除主播动态dynamic_id：Array');
+INSERT INTO `zb_log` VALUES ('127', 'admin', '1519889687', '127.0.0.1', '编辑用户ID为31用户动态ID：7');
+INSERT INTO `zb_log` VALUES ('128', 'admin', '1519889701', '127.0.0.1', '编辑用户ID为31用户动态ID：7');
+INSERT INTO `zb_log` VALUES ('129', 'admin', '1519889710', '127.0.0.1', '编辑用户ID为31用户动态ID：7');
+INSERT INTO `zb_log` VALUES ('130', 'admin', '1519890467', '127.0.0.1', '新增用户ID为31用户动态ID：8');
+INSERT INTO `zb_log` VALUES ('131', 'admin', '1519890800', '127.0.0.1', '新增用户ID为31用户动态ID：9');
+INSERT INTO `zb_log` VALUES ('132', 'admin', '1519891160', '127.0.0.1', '新增用户ID为28用户动态ID：10');
+INSERT INTO `zb_log` VALUES ('133', 'admin', '1519891331', '127.0.0.1', '新增用户ID为31用户动态ID：11');
+INSERT INTO `zb_log` VALUES ('134', 'admin', '1519891367', '127.0.0.1', '新增用户ID为26用户动态ID：12');
+INSERT INTO `zb_log` VALUES ('135', 'admin', '1519891505', '127.0.0.1', '编辑用户ID为26用户动态ID：12');
+INSERT INTO `zb_log` VALUES ('136', 'admin', '1519891630', '127.0.0.1', '编辑菜单，ID：74');
+INSERT INTO `zb_log` VALUES ('137', 'admin', '1519891646', '127.0.0.1', '编辑菜单，ID：67');
+INSERT INTO `zb_log` VALUES ('138', 'admin', '1519891678', '127.0.0.1', '编辑菜单，ID：74');
+INSERT INTO `zb_log` VALUES ('139', 'admin', '1519891692', '127.0.0.1', '编辑菜单，ID：67');
+INSERT INTO `zb_log` VALUES ('140', 'admin', '1519891710', '127.0.0.1', '编辑菜单，ID：69');
+INSERT INTO `zb_log` VALUES ('141', 'admin', '1519891720', '127.0.0.1', '编辑菜单，ID：70');
+INSERT INTO `zb_log` VALUES ('142', 'admin', '1519891729', '127.0.0.1', '编辑菜单，ID：71');
+INSERT INTO `zb_log` VALUES ('143', 'admin', '1519891755', '127.0.0.1', '编辑菜单，ID：72');
+INSERT INTO `zb_log` VALUES ('144', 'admin', '1519891767', '127.0.0.1', '编辑菜单，ID：74');
+INSERT INTO `zb_log` VALUES ('145', 'admin', '1519891966', '127.0.0.1', '新增菜单，名称：新增动态');
+INSERT INTO `zb_log` VALUES ('146', 'admin', '1519892017', '127.0.0.1', '新增菜单，名称：删除动态');
+INSERT INTO `zb_log` VALUES ('147', 'admin', '1519892063', '127.0.0.1', '新增菜单，名称：编辑动态');
+INSERT INTO `zb_log` VALUES ('148', 'admin', '1519892114', '127.0.0.1', '编辑菜单，ID：77');
+INSERT INTO `zb_log` VALUES ('149', 'admin', '1519892160', '127.0.0.1', '新增菜单，名称：更新动态');
+INSERT INTO `zb_log` VALUES ('150', 'admin', '1519892281', '127.0.0.1', '新增菜单，名称：服务管理');
+INSERT INTO `zb_log` VALUES ('151', 'admin', '1519892324', '127.0.0.1', '新增菜单，名称：删除服务');
+INSERT INTO `zb_log` VALUES ('152', 'admin', '1519892348', '127.0.0.1', '新增菜单，名称：编辑服务');
+INSERT INTO `zb_log` VALUES ('153', 'admin', '1519892377', '127.0.0.1', '新增菜单，名称：更新服务');
+INSERT INTO `zb_log` VALUES ('154', 'admin', '1519892483', '127.0.0.1', '编辑菜单，ID：81');
+INSERT INTO `zb_log` VALUES ('155', 'admin', '1519892639', '127.0.0.1', '删除菜单ID：26');
+INSERT INTO `zb_log` VALUES ('156', 'admin', '1519892649', '127.0.0.1', '删除菜单ID：25');
+INSERT INTO `zb_log` VALUES ('157', 'admin', '1519892663', '127.0.0.1', '删除菜单ID：27');
+INSERT INTO `zb_log` VALUES ('158', 'admin', '1519892672', '127.0.0.1', '删除菜单ID：29');
+INSERT INTO `zb_log` VALUES ('159', 'admin', '1519892678', '127.0.0.1', '删除菜单ID：30');
+INSERT INTO `zb_log` VALUES ('160', 'admin', '1519892818', '127.0.0.1', '新增会员，会员UID：32');
+INSERT INTO `zb_log` VALUES ('161', 'admin', '1519892903', '127.0.0.1', '编辑菜单，ID：14');
+INSERT INTO `zb_log` VALUES ('162', 'admin', '1519892927', '127.0.0.1', '编辑菜单，ID：15');
+INSERT INTO `zb_log` VALUES ('163', 'admin', '1519892950', '127.0.0.1', '编辑菜单，ID：67');
+INSERT INTO `zb_log` VALUES ('164', 'admin', '1519892982', '127.0.0.1', '编辑菜单，ID：16');
+INSERT INTO `zb_log` VALUES ('165', 'admin', '1519892992', '127.0.0.1', '编辑菜单，ID：17');
+INSERT INTO `zb_log` VALUES ('166', 'admin', '1519893008', '127.0.0.1', '编辑菜单，ID：18');
+INSERT INTO `zb_log` VALUES ('167', 'admin', '1519893021', '127.0.0.1', '编辑菜单，ID：67');
+INSERT INTO `zb_log` VALUES ('168', 'admin', '1519893095', '127.0.0.1', '编辑菜单，ID：67');
+INSERT INTO `zb_log` VALUES ('169', 'admin', '1519893183', '127.0.0.1', '删除自定义变量，ID：te');
 
 -- ----------------------------
 -- Table structure for zb_member
@@ -563,7 +641,7 @@ CREATE TABLE `zb_member` (
   `lt` int(11) NOT NULL COMMENT '最后登录时间',
   `t` int(10) unsigned NOT NULL COMMENT '注册时间',
   PRIMARY KEY (`uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of zb_member
@@ -599,6 +677,34 @@ INSERT INTO `zb_member` VALUES ('28', 'test27', '', '记忆灬♚厘子', '/Publ
 INSERT INTO `zb_member` VALUES ('29', 'test28', '', '记忆灬♚厘子', '/Public/attached/2018/02/12/5a8103c7ed2a01.jpg', '2', '1509465600', '27', '酉鸡', '天蝎座)', '18511353013', '123456789', '123@qq.com', 'f6d080a7f6e9f62199f401715ddb37f7', '1', '黑龙江', '佳木斯', '0.00', '9999', '4', '0', '1', '1518404590', '1518404590');
 INSERT INTO `zb_member` VALUES ('30', 'test29', '', '记忆灬♚厘子', '/Public/attached/2018/02/12/5a8103c7ed2a01.jpg', '2', '1509465600', '27', '酉鸡', '天蝎座)', '18511353013', '123456789', '123@qq.com', 'f6d080a7f6e9f62199f401715ddb37f7', '1', '黑龙江', '佳木斯', '0.00', '9999', '4', '0', '1', '1518404590', '1518404590');
 INSERT INTO `zb_member` VALUES ('31', 'test30', '', '记忆灬♚厘子', '/Public/attached/2018/02/12/5a8103c7ed2a0.png', '2', '1509465600', '27', '酉鸡', '天蝎座)', '18511353013', '123456789', '123@qq.com', 'f6d080a7f6e9f62199f401715ddb37f7', '1', '黑龙江', '佳木斯', '0.00', '9999', '4', '0', '1', '1518404590', '1518404590');
+INSERT INTO `zb_member` VALUES ('32', 'zhangchengwu', null, 'zhangchengwu', '', '0', '0', null, null, null, '', '', '', '66d6a1c8748025462128dc75bf5ae8d1', '0', '北京', '东城区', '0.00', '0', '0', '0', '1', '1519892818', '1519892818');
+
+-- ----------------------------
+-- Table structure for zb_member_wechat
+-- ----------------------------
+DROP TABLE IF EXISTS `zb_member_wechat`;
+CREATE TABLE `zb_member_wechat` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` int(10) unsigned NOT NULL,
+  `group_id` varchar(20) DEFAULT NULL COMMENT '用户所在的分组ID',
+  `nickname` varchar(60) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '用户昵称',
+  `sex` tinyint(1) DEFAULT NULL COMMENT '性别',
+  `city` varchar(30) DEFAULT NULL COMMENT '城市',
+  `headimgurl` varchar(200) DEFAULT NULL COMMENT '用户头像地址',
+  `subscribe_time` int(11) DEFAULT NULL COMMENT '用户关注时间',
+  `token` varchar(30) DEFAULT NULL COMMENT '用户token',
+  `openid` varchar(60) DEFAULT NULL COMMENT '用户唯一标识openid',
+  `unionid` varchar(60) DEFAULT NULL,
+  `status` tinyint(1) DEFAULT NULL COMMENT '用户关注状态，1为关注，0为未关注',
+  `province` varchar(20) DEFAULT NULL,
+  `country` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `openid` (`openid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信用户基本信息表';
+
+-- ----------------------------
+-- Records of zb_member_wechat
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for zb_serve
@@ -681,5 +787,21 @@ INSERT INTO `zb_setting` VALUES ('title', '微笑前行', '0', '', '0');
 INSERT INTO `zb_setting` VALUES ('keywords', '关键词', '0', '', '0');
 INSERT INTO `zb_setting` VALUES ('description', '网站描述', '0', '', '0');
 INSERT INTO `zb_setting` VALUES ('footer', '2016©Anchor', '0', '', '0');
-INSERT INTO `zb_setting` VALUES ('access_token', '', '0', 'access_token', '0');
-INSERT INTO `zb_setting` VALUES ('te', '测试', '1', '测试变量', '0');
+INSERT INTO `zb_setting` VALUES ('access_token', '7_fZIgaKmlsSr6npYwWUYLEbFxAJzJCpHpqeTx1WyDnb_aXEozXZidXlEc-hlik3CpkLHb8gBNON5F4oRhnMhH4KieaaExs9jAoz4ss3HR9Nup06t1AKOmST7F5uuqxANgGQfPYRV25b-6TtZMDLNeAAAZHJ', '0', 'access_token', '1519954625');
+
+-- ----------------------------
+-- Table structure for zb_wechat_log
+-- ----------------------------
+DROP TABLE IF EXISTS `zb_wechat_log`;
+CREATE TABLE `zb_wechat_log` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `code` varchar(200) DEFAULT NULL,
+  `openid` varchar(200) DEFAULT NULL,
+  `access_token` varchar(512) DEFAULT NULL,
+  `t` int(10) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of zb_wechat_log
+-- ----------------------------
